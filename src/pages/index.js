@@ -1,14 +1,12 @@
 import React from 'react'
 import { graphql } from 'gatsby';
 import Img from 'gatsby-image/withIEPolyfill';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
 import Layout from '../components/layout';
 import Sidebar from '../components/sidebar';
+import FeatureBlogs from '../components/FeatureBlogs';
 
 const Home = ({ data }) => {
-  console.log(data);
   return (
     <Layout>
       <main className="main">
@@ -53,17 +51,21 @@ const Home = ({ data }) => {
               </div>
 
               <div className="hire-contact">
-                <button className="button-hire">I'm Available. Hire Me</button>
+                <button
+                  className="button-hire"
+                  onClick={() => { window.location.href = "mailto:tobydrane@gmail.com" }}
+                >
+                  I'm Available. Hire Me
+                </button>
               </div>
             </div>
-            <div className="scroll-icon">
-              <a href="#features">
-                <FontAwesomeIcon className="bounce" size='2x' icon={faAngleDown} />
-              </a>
-            </div>
           </div>
-          <div className="hero-blogs" id="features">
-            <p>Somewhere else</p>
+
+          <div className="hero-blogs">
+            <h2>Recent Blogs</h2>
+            <div className="wrapper">
+              <FeatureBlogs allMdx={data.allMdx} />
+            </div>
           </div>
         </div>
       </main>
@@ -94,6 +96,27 @@ export const query = graphql`
         fluid(maxWidth: 800) {
           # Choose either the fragment including a small base64ed image, a traced placeholder SVG, or one without.
           ...GatsbyImageSharpFluid_noBase64
+        }
+      }
+    },
+    allMdx(sort: { order: DESC, fields: [frontmatter___date] }) {
+      edges {
+        node {
+          fields {
+            slug
+          }
+          frontmatter {
+            title
+            description
+            heroImage {
+              childImageSharp {
+                fluid(maxWidth: 1000) {
+                  # Choose either the fragment including a small base64ed image, a traced placeholder SVG, or one without.
+                  ...GatsbyImageSharpFluid_noBase64
+                }
+              }
+            }
+          }
         }
       }
     }

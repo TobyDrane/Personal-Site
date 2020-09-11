@@ -1,0 +1,110 @@
+.blog-wrapper {
+  width: 100%;
+  height: 100%;
+  background-color: $color-white !important;
+
+  .header {
+    background-color: $color-white;
+    height: 50px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+
+    .container {
+      margin: auto;
+      max-width: 70%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+        
+      a {
+        text-decoration: none;
+        color: $color-black;
+        font-size: 1.6rem;
+        font-weight: 600;
+      }
+    }
+  }
+ 
+  .blog-body {
+    padding-top: 50px!important;
+    
+    .blog-heading-container {
+      margin: auto;
+      max-width: 55%;
+      text-align: center; 
+       
+      h1 {
+        color: $color-blog-heading;
+        font-size: 2.6rem;
+        margin-top: 0.9rem;
+        margin-bottom: 0.9rem;
+      }
+
+      p {
+        color: $color-blog-secondary;
+        font-size: 1rem;
+      }
+    }
+
+    .hero-image {
+      display: grid;
+      grid-template-columns: 120px auto;
+      margin: 35px 8% !important;
+
+      .share {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .share-icon {
+          margin-bottom: 10px;
+        }
+
+        .grow {
+          transition: all 0.2s ease-in-out;
+        
+          &:hover {
+            transform: scale(1.2);
+          }
+        }
+
+        p {
+          color: $color-blog-secondary;
+          font-size: 1.1rem;
+          margin-bottom: 15px;
+        }
+      }
+    }
+
+    .container {
+      margin: auto;
+      max-width: 50%;
+
+      h1 {
+        font-size: 2.6rem;
+      }
+
+      p {
+        font-size: 1.2rem;
+      }
+      
+      .blog-content {
+        .blog-inner-heading {
+          color: $color-blog-heading;
+          font-size: 2.2rem; 
+        }
+
+        .blog-inner-content {
+          color: $color-blog-content;
+          font-family: sans-serif;
+          margin-top: 0.86em;
+          font-size: 1.1rem;
+          font-weight: 300;
+          line-height: 1.6rem;
+        }
+ 
+        margin-bottom: 95px !important;
+      }
+    }
+  }
+}
