@@ -12,7 +12,7 @@ const About = () => {
             <div className="banner">
               <h1>About Me</h1>
               <p>
-                I am currently based in London, studying at University College London for my MSc in Data Science and Machine Learning.
+                I am currently based in Cambridge, studying at University College London for my MSc in Data Science and Machine Learning.
                 I have previously graduated from the University of Keele with a first class honors in BSc Computer Science.
               </p>
               <br />

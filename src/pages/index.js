@@ -16,7 +16,7 @@ const Home = ({ data }) => {
             <div className="banner">
               <h1>Hello <img alt="waving hand" src="https://twemoji.maxcdn.com/2/svg/1f44b.svg"/> I'm Toby</h1>
               <h2>Current MSc Data Science & Machine Learning Student at UCL</h2>
-              <p>Software Engineer, Machine Learning researcher and Entrepreneur from Cambridge & London.</p>
+              <p>Software Engineer, Machine Learning researcher from Cambridge.</p>
               <br />
               <p>I've worked as fullstack developer at some of Cambridge's most exciting startups. I have specialised in frontend design and cloud architectures. Please see my blogs about software engineering, resarch and everything in-between.</p>
 
