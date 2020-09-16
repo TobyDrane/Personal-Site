@@ -1,6 +1,13 @@
 const path = require('path');
 
 module.exports = {
+  siteMetadata: {
+    title: `Toby Drane`,
+    description: `Toby Drane persoanl site - currently MSc Data Science & Machine Learning at UCL.`,
+    author: `Toby Drane`,
+    siteUrl: `https://tobydrane.com`,
+    twitterUsername: `@toby_dev_drane`
+  },
   plugins: [
     `gatsby-plugin-sass`,
     {
