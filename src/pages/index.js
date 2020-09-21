@@ -18,7 +18,7 @@ const Home = ({ data }) => {
               <h2>Current MSc Data Science & Machine Learning Student at UCL</h2>
               <p>Software Engineer, Machine Learning researcher from Cambridge.</p>
               <br />
-              <p>I've worked as fullstack developer at some of Cambridge's most exciting startups. I have specialised in frontend design and cloud architectures. Please see my blogs about software engineering, resarch and everything in-between.</p>
+              <p>I've worked as fullstack developer at some of Cambridge's most exciting startups. I have specialised in frontend design and cloud architectures. Please see my blogs about software engineering, research and everything in-between.</p>
 
               <div className="locations">
                 <h2>Previously at: </h2>

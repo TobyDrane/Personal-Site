@@ -89,12 +89,12 @@
       }
       
       .blog-content {
-        .blog-inner-heading {
+        h1 {
           color: $color-blog-heading;
           font-size: 2.2rem; 
         }
 
-        .blog-inner-content {
+        p {
           color: $color-blog-content;
           font-family: sans-serif;
           margin-top: 0.86em;
@@ -103,6 +103,16 @@
           line-height: 1.6rem;
         }
  
+        .full-page-quote {
+          font-style: italic;
+          color: #6a737d;
+          font-family: sans-serif;
+          margin-top: 0.86em;
+          font-size: 1.1rem;
+          font-weight: 300;
+          line-height: 1.6rem;
+        }
+        
         margin-bottom: 95px !important;
       }
     }

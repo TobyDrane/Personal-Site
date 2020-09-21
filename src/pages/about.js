@@ -23,7 +23,7 @@ const About = () => {
               </p>
               <br />
               <p>
-                Other commerical works include a fullstack (Angular & Serverless Lambdas) application used in house for a deep search tech platform.
+                Other commercial works include a fullstack (Angular & Serverless Lambdas) application used in house for a deep search tech platform.
                 Working as a machine learning researcher at a marketing company, to see if it is possible to use AI to build place brands.
               </p>
               <br />
