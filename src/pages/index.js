@@ -2,8 +2,8 @@ import React from 'react'
 import { graphql } from 'gatsby';
 import Img from 'gatsby-image/withIEPolyfill';
 
-import Layout from '../components/layout';
-import Sidebar from '../components/sidebar';
+import Layout from '../components/Layout';
+import Sidebar from '../components/Sidebar';
 import FeatureBlogs from '../components/FeatureBlogs';
 
 const Home = ({ data }) => {
