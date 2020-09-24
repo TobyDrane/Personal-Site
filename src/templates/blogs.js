@@ -4,12 +4,14 @@ import { MDXProvider } from '@mdx-js/react';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
 import moment from 'moment';
 import ShareBar from '../components/blogs/ShareBar';
+import SEO from '../components/SEO';
 
 export default function ({ data, location }) {
   const { mdx } = data;
   const { title, heroImage, description, date } = mdx.frontmatter;
   return (
     <main className='blog-wrapper'>
+      <SEO />
       <div className='header'>
         <div className='container'>
           <a href='/'>Home</a>
