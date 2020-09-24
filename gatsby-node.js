@@ -34,6 +34,7 @@ exports.createPages = ({ graphql, actions }) => {
             title
             date
             type
+            private
           }
         }
       }

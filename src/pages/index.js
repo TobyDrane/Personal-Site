@@ -110,6 +110,7 @@ export const query = graphql`
           frontmatter {
             title
             description
+            private
             heroImage {
               childImageSharp {
                 fluid(maxWidth: 1000) {

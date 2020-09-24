@@ -8,6 +8,10 @@ const FeatureBlogs = ({ allMdx }) => {
       {edges.map((edge, index) => {
         const { node } = edge;
         const { frontmatter } = node;
+        console.log(frontmatter);
+        if (frontmatter.private) {
+          return null;
+        }
         return (
           <div key={`blog-card-${index}`} className='blog-card' onClick={() => {
             window.location = node.fields.slug
@@ -15,7 +19,8 @@ const FeatureBlogs = ({ allMdx }) => {
             <Img
               fluid={frontmatter.heroImage.childImageSharp.fluid}
               style={{
-                width: '100%'
+                width: '100%',
+                height: '160px'
               }}
             />
             <div className='container'>
