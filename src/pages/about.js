@@ -30,7 +30,8 @@ const About = () => {
               </p>
               <br />
               <p>
-                I am now researching deep reinforcement learning and multi agent systems at UCL and, their use cases within finance and behaviour analytics.
+                My research at UCL is around multi agent systems and deep reinforcement learning. Theoretical interests but also around the applications of
+                the systems for commercial use cases.
               </p>
             </div>
           </div>
