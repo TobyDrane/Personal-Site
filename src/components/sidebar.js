@@ -18,7 +18,7 @@ const Sidebar = () => {
                 }
               }
             },
-            pdf: file(name: { eq: "toby_cv" }) {
+            pdf: file(name: { eq: "toby_cv2" }) {
               publicURL
             }
           }`
