@@ -6,6 +6,8 @@ import moment from 'moment';
 import ShareBar from '../components/blogs/ShareBar';
 import SEO from '../components/SEO';
 
+import 'katex/dist/katex.min.css';
+
 export default function ({ data, location }) {
   const { mdx } = data;
   const { title, heroImage, description, date } = mdx.frontmatter;

@@ -1,0 +1,150 @@
+---
+title: Supervised Learning - Linear Regression
+description: Blog 1 of the supervised learning series, looking at linear regression.
+date: 2020-10-19
+type: blog
+heroImage: images/2020-10-19-Math.jpeg
+---
+
+# Foreword
+
+This is the first blog into a new series I am going to write around the topic of supervised learning.
+This series will follow the concepts taught during my MSc at UCL, and the module COMP0078.
+
+<br />
+<br />
+
+# Supervised Learning Model
+
+There is one simple goal of a supervised learning model. Given training data:
+
+$$
+S=\{(x_1, y_1), (x_2, y_2) ..., (x_m, y_m)\}
+$$
+
+let's infer a function $f_s$ such that: $f_s \approx y_i$ for future data:
+
+$$
+S^" = \{(x_{m+1}, y_{m+1}), (x_{m+2}, y_{m+2})...\}
+$$
+
+The idea of a supervised learning problem is to compute a function that best describes an input/output relationship. There are two types; **regression & classification. Regression** is where we predict quantitative values $y \in \R$. **Classification** we predict qualitative values    $y \in [-1, +1]$.
+
+- **Generalization error** tells us how well $f_s$ performs on new data
+- **Computational/Sample complexity** tells us how complex the learning task is
+
+<br />
+<br />
+
+# Least Squares Error
+
+Least squares is a common algorithm used within linear regression. Given a vector of inputs X we predict the output Y via the model.
+
+$$
+\hat{Y} = \hat{\beta_0} + \sum_{j=1}^{n}{X_j \hat{\beta_j}}
+$$
+
+We are going to be looking at least squares from the viewpoint of matrices, as seen with the following:
+
+$$
+  Y = \begin{bmatrix}
+        y_1 \\
+        y_2 \\
+        : \\
+        y_n
+      \end{bmatrix}
+ 
+  \enspace
+  \enspace
+
+  \beta = \begin{bmatrix}
+    \beta_0 \\
+    \beta_1
+  \end{bmatrix}
+
+  \enspace
+  \enspace
+
+  X = \begin{bmatrix}
+    1 && x_1 \\
+    1 && x_2 \\
+    : \\
+    1 && x_n
+  \end{bmatrix}
+$$
+
+We place a constant value as the first element in the $X$ matrix due to what happens we multiply this by the coefficients matrix, this is known as the design matrix.
+The matrix multiplication producing:
+
+$$
+ X\beta = \begin{bmatrix}
+  \beta_0 + \beta_1x_1 \\
+  : \\
+  \beta_0 + \beta_nx_n 
+ \end{bmatrix}
+$$
+
+Least sqaures takes the sqaure difference between the actual value and our functions predicted value, such that $e(\beta) = (y - \beta x)$. Using the matrices we can expand this out as:
+
+$$
+\begin{aligned}
+Error(\beta) &= \frac{1}{n} \sum_{i=1}^n (y_i - \beta x_i) ^ 2 \\
+&= \frac{1}{n} (Y - \beta X)^T(Y - \beta X) \\
+& = \frac{1}{n} (Y^T Y - 2 \beta^T X^T Y + \beta^T X^T X \beta)
+\end{aligned}
+$$
+
+How to minimize the error? Find the gradient with respect to $\beta$ then solve for 0.
+
+$$
+\begin{aligned}
+\frac{\partial Y}{\partial \beta} &= \frac{1}{n} (0 - 2 X^T Y + 2 X^T X \beta) \\
+&= \frac{2}{n} (X^T X \beta - X^T Y) \\
+0 &= X^T X \beta - X^T Y \\
+X^T Y &= X^T X \beta
+\end{aligned}
+$$
+
+If the matrix $X^T X$ is invertable the solution is unique such that:
+
+$$
+\beta = (X^T X)^{-1} X^T y
+$$
+
+# Python Implementation
+
+```python
+import matplotlib.pyplot as plot
+import numpy
+
+# Calculate the weight value based upon the matrices
+# (XTX)^-1(XT)Y
+def calculate_weight(X, Y):
+    XT = numpy.transpose(X)
+    w = numpy.dot(numpy.dot(numpy.linalg.inv(numpy.dot(XT, X)), XT), Y)
+    return w
+
+data = numpy.array([(1, 3), (2, 2), (3, 0), (4, 5)])
+
+x = data[:, 0]
+y = data[:, 1]
+X = numpy.matrix(x).T
+Y = numpy.matrix(y).T
+
+print(X)
+print(Y)
+
+# Calculate all the required weights
+w1 = calculate_weight(X, Y)
+
+xd = numpy.linspace(0, 4.5, 4)
+
+# Let's draw the scatter diagram
+plot.scatter(x, y)
+plot.plot(xd, X@w1)
+plot.xlabel('x')
+plot.ylabel('y')
+plot.show()
+```
+The resulting plot being:
+![Linear Regression](/images/LR-Result.png)

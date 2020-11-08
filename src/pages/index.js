@@ -57,7 +57,7 @@ const Home = ({ data }) => {
                   className="button-hire"
                   onClick={() => { window.location.href = "mailto:tobydrane@gmail.com" }}
                 >
-                  I'm Available. Hire Me
+                  Need consultancy? Get in touch.
                 </button>
               </div>
             </div>
