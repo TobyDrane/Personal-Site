@@ -14,25 +14,25 @@ const About = () => {
             <div className="banner">
               <h1>About Me</h1>
               <p>
+                For my final year project at University College London I am researching low volume ML models for an insurtech firm
+                Ki-Insurance.
+              </p>
+              <br />
+              <p>
                 I am currently based in Cambridge, studying at University College London for my MSc in Data Science and Machine Learning.
-                I have previously graduated from the University of Keele with a first class honors in BSc Computer Science.
+                I have hold a first class honors in BSc Computer Science.
               </p>
               <br />
               <p>
-                For the last three years I have taken several fullstack engineering roles and startups around Cambridge.
-                I was at Cambridge Intelligence for sequential summers working with on a JS SDK, built within Node.
-                Second summer worked on porting the JS SDK to a React component, deployed onto a K8S cluster.
+                For the last three years I have taken several fullstack engineering roles and startups around Cambridge. Working on
+                everything from frontend web development to automated cloud deployments.
               </p>
               <br />
               <p>
-                Other commercial works include a fullstack (Angular & Serverless Lambdas) application used in house for a deep search tech platform.
+                Other commercial work includes developing an search application used in house for a deep search tech platform.
                 Working as a machine learning researcher at a marketing company, to see if it is possible to use AI to build place brands.
               </p>
               <br />
-              <p>
-                My research at UCL is around multi agent systems and deep reinforcement learning. Theoretical interests but also around the applications of
-                the systems for commercial use cases.
-              </p>
             </div>
           </div>
         </div>

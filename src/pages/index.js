@@ -20,7 +20,12 @@ const Home = ({ data }) => {
               <h2>Current MSc Data Science & Machine Learning Student at UCL</h2>
               <p>Software Engineer, Machine Learning researcher from Cambridge.</p>
               <br />
-              <p>I've worked as fullstack developer at some of Cambridge's most exciting startups. I have specialised in frontend design and cloud architectures. Please see my blogs about software engineering, research and everything in-between.</p>
+
+              <p>
+                I have interests around supervised and statistical based machine learning models. I have an interest in the theoretical mathematics that underpin AI fundamentals.
+                I have previously worked as a software engineer across a fullstack, with many different languages.
+                Please see my blogs below about general software engineer, machine learning and everything else between.
+              </p>
 
               <div className="locations">
                 <h2>Previously at: </h2>
@@ -57,7 +62,7 @@ const Home = ({ data }) => {
                   className="button-hire"
                   onClick={() => { window.location.href = "mailto:tobydrane@gmail.com" }}
                 >
-                  Need consultancy? Get in touch.
+                  Contact Me.
                 </button>
               </div>
             </div>
