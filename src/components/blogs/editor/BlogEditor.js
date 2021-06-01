@@ -8,6 +8,7 @@ import {
 } from 'draft-js'
 import { convertToHTML } from 'draft-convert'
 import Immutable from 'immutable'
+import PublishModal from '../PublishModal'
 
 import 'draft-js/dist/Draft.css'
 
@@ -94,6 +95,9 @@ const InlineStyleControls = ({ editorState, onToggle }) => {
 const BlogEditor = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty())
   const [JSONContent, setJSONContent] = useState({})
+  const [componentState, setComponentState] = useState({
+    publishModalShown: false,
+  })
 
   // We handle how we render the blocks, i.e. we can make H6 use a <h2> tag
   // draft-js default's paragraphs and anything else to a div
@@ -118,7 +122,9 @@ const BlogEditor = () => {
     const content = editorState.getCurrentContent()
     const raw = convertToRaw(content)
     const htmlRaw = convertToHTML(content)
-    console.log(JSON.stringify({ raw, htmlRaw }))
+
+    setJSONContent({ raw, htmlRaw })
+    setComponentState({ ...componentState, publishModalShown: true })
   }
 
   return (
@@ -158,6 +164,16 @@ const BlogEditor = () => {
             />
           </div>
         </div>
+
+        {componentState.publishModalShown ? (
+          <PublishModal
+            isShown={componentState.publishModalShown}
+            onRequestClose={() =>
+              setComponentState({ ...componentState, publishModalShown: false })
+            }
+            JSONContent={JSONContent}
+          />
+        ) : null}
       </div>
     </div>
   )
