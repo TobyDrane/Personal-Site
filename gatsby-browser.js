@@ -1,6 +1,5 @@
 import 'firebase/auth'
-import 'firebase/firestore'
-import 'firebase/functions'
+import 'firebase/storage'
 
 import './src/styles/global.scss'
 require("prismjs/themes/prism.css")
