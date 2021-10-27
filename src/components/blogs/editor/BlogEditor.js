@@ -3,6 +3,7 @@ import {
   Editor,
   EditorState,
   RichUtils,
+  convertFromRaw,
   convertToRaw,
   DefaultDraftBlockRenderMap,
 } from 'draft-js'
@@ -92,8 +93,14 @@ const InlineStyleControls = ({ editorState, onToggle }) => {
 // The main blog editor component
 // we create and handle the draft-js editor
 //
-const BlogEditor = () => {
-  const [editorState, setEditorState] = useState(EditorState.createEmpty())
+const BlogEditor = ({ blogItem }) => {
+  // If we have been passed a blog item we are then editing a blog
+  // convert raw into a ContentState and then set EditorState given ContentState
+  const [editorState, setEditorState] = useState(
+    blogItem
+      ? EditorState.createWithContent(convertFromRaw(blogItem.content.raw))
+      : EditorState.createEmpty()
+  )
   const [JSONContent, setJSONContent] = useState({})
   const [componentState, setComponentState] = useState({
     publishModalShown: false,

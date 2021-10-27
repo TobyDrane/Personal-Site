@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { navigate } from 'gatsby'
 import moment from 'moment'
 import firebase from 'firebase'
+import { v4 as uuidv4 } from 'uuid'
 import Modal from '../ui/Modal'
 
 // Modal Body
@@ -57,6 +58,7 @@ const PublishModal = ({ isShown, onRequestClose, JSONContent }) => {
     ...schemaConstants,
     date: moment().format('YYYY-MM-DD'),
     content: JSONContent,
+    id: uuidv4(),
   })
 
   // Required to handle the blog state change for pushing to firebase
