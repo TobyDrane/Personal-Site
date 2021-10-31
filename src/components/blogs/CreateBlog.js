@@ -5,6 +5,8 @@ import * as queryString from 'query-string'
 import BlogEditor from './editor/BlogEditor'
 import { firebaseFetchBlogs } from '../../utils'
 
+// Used to display a single item within the blog list setting
+// Function fires back the item upon an certain action happening (edit & delete)
 const BlogListItem = ({ item, onEditClick, onDeleteClick }) => {
   return (
     <div className="item" key={item.id}>
