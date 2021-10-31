@@ -1,3 +1,5 @@
+import { isBrowser } from './services/auth'
+
 // Async firebase function to fetch all the blogs and return array
 // consisting of blog each blog data
 const firebaseFetchBlogs = async firebase => {
@@ -38,8 +40,11 @@ const getBlogsDownloadURLS = async firebase => {
 // Given an array of urls to download files from
 // download file contents and return an array of objects
 const downloadFiles = async urls => {
-  const promises = urls.map(url => fetch(url).then(file => file.json()))
-  const data = await Promise.all(promises)
+  let data = []
+  if (isBrowser()) {
+    const promises = urls.map(url => fetch(url).then(file => file.json()))
+    data = await Promise.all(promises)
+  }
   return data
 }
 

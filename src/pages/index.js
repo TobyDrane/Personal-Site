@@ -22,6 +22,8 @@ const Home = ({ data }) => {
     firebaseFetch()
   }, [])
 
+  console.log(blogItems)
+
   return (
     <Layout>
       <SEO />
