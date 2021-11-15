@@ -93,30 +93,32 @@ const CreateBlog = ({ location }) => {
   }
 
   return (
-    <div className="create-blog-wrapper">
-      {firebaseErrorMessage ? (
-        <p className="error-text">{firebaseErrorMessage}</p>
-      ) : null}
+    <div className="master-container">
+      <div className="create-blog-wrapper">
+        {firebaseErrorMessage ? (
+          <p className="error-text">{firebaseErrorMessage}</p>
+        ) : null}
 
-      <div className="content">
-        <div className="action-bar">
-          <button className="create-new-button" onClick={createNewBlog}>
-            Create Blog
-          </button>
-          <button className="logout-button" onClick={logout}>
-            Logout
-          </button>
-        </div>
+        <div className="content">
+          <div className="action-bar">
+            <button className="create-new-button" onClick={createNewBlog}>
+              Create Blog
+            </button>
+            <button className="logout-button" onClick={logout}>
+              Logout
+            </button>
+          </div>
 
-        <div className="blog-list">
-          {blogItems.map(item => (
-            <BlogListItem
-              key={item.id}
-              item={item}
-              onDeleteClick={onDeleteBlog}
-              onEditClick={onEditBlog}
-            />
-          ))}
+          <div className="blog-list">
+            {blogItems.map(item => (
+              <BlogListItem
+                key={item.id}
+                item={item}
+                onDeleteClick={onDeleteBlog}
+                onEditClick={onEditBlog}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>

@@ -1,21 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import CookieConsent from 'react-cookie-consent';
+import React from 'react'
+import PropTypes from 'prop-types'
+import CookieConsent from 'react-cookie-consent'
+import Header from './Header'
 
-const Layout = ({ children }) => (
-  <div className="site-layout">
+const Layout = ({ showHeader = true, children }) => (
+  <div className="master-layout">
+    {showHeader ? <Header /> : null}
     {children}
-    <div className='footer'>
-      <p>Made with {' '}
-        <span>
-          <img alt='love-heart' src='https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/2764.png' />
-        </span>
-        {' '} by Toby Drane
-      </p>
+    <div className="footer">
+      <p>Made by Toby Drane - All Content Own</p>
     </div>
     <CookieConsent
-      location='bottom'
-      buttonText='Thats fine!'
+      location="bottom"
+      buttonText="Thats fine!"
       style={{
         backgroundColor: '#fc504c',
       }}
@@ -23,15 +20,15 @@ const Layout = ({ children }) => (
         backgroundColor: '#FFF',
         color: '#fc504c',
       }}
-      cookieName='TDConsentCookie'
+      cookieName="TDConsentCookie"
     >
       This website uses cookies to enhance your experience.
     </CookieConsent>
   </div>
-);
+)
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
 }
 
-export default Layout;
+export default Layout
