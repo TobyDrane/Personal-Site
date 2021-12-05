@@ -1,44 +1,61 @@
-import React from 'react';
-import Layout from '../components/Layout';
-import SEO from '../components/SEO';
-import Sidebar from '../components/Sidebar';
+import React from 'react'
+import { graphql, StaticQuery } from 'gatsby'
+import Layout from '../components/Layout'
+import SEO from '../components/SEO'
 
 const About = () => {
   return (
-    <Layout>
-      <SEO />
-      <main className="main">
-        <Sidebar />
-        <div className="home-content">
-          <div className="hero">
-            <div className="banner">
-              <h1>About Me</h1>
-              <p>
-                For my final year project at University College London I am researching low volume ML models for an insurtech firm
-                Ki-Insurance.
-              </p>
+    <StaticQuery
+      query={graphql`
+        {
+          pdf: file(name: { eq: "toby_cv2" }) {
+            publicURL
+          }
+        }
+      `}
+      render={data => (
+        <Layout>
+          <SEO />
+          <div className="master-container">
+            <div className="about-body">
+              I hold a first class honours in a BSc Computer Science and most
+              recently a MSc in Data Science & Machine Learning from University
+              College London (UCL).
               <br />
-              <p>
-                I am currently based in Cambridge, studying at University College London for my MSc in Data Science and Machine Learning.
-                I have hold a first class honors in BSc Computer Science.
-              </p>
               <br />
-              <p>
-                For the last three years I have taken several fullstack engineering roles and startups around Cambridge. Working on
-                everything from frontend web development to automated cloud deployments.
-              </p>
+              I have been lucky enough to spend a couple of years in various
+              commercial companies, including a deep search tech startup and as
+              a machine learning researcher at a marketing company to see if it
+              was possible to use AI and Machine Learning to build place brands.
               <br />
-              <p>
-                Other commercial work includes developing an search application used in house for a deep search tech platform.
-                Working as a machine learning researcher at a marketing company, to see if it is possible to use AI to build place brands.
-              </p>
               <br />
+              The last 6 months of my MSc was spent at a large speciality
+              insurance company in the City of London where I researched the use
+              of Bayesian Networks and Bayesian Machine Learning to predict the
+              severity of claims on energy and cyber speciality insurance
+              contracts. The project was successful in exploring how Bayesian
+              statistics can aid the prediction within these markets and
+              achieved an AUC of {'>'} 0.7 (please see my final thesis writeup
+              for further reading).
+              <br />
+              <br />
+              Currently I spend my time as a data engineer and data scientist
+              producing predictive models and production data data pipelines. I
+              enjoy exploring the use of statistical models in scenarios from
+              election modelling to Bitcoin prediction.
+              <br />
+              <br />
+              Please do get in touch for commercial opportunities, consultancy
+              or even just a coffee within London. My curriculum vitae can be{' '}
+              <a href="" onClick={() => window.open(data.pdf.publicURL)}>
+                found here.
+              </a>
             </div>
           </div>
-        </div>
-      </main>
-    </Layout>
+        </Layout>
+      )}
+    />
   )
 }
 
-export default About;
+export default About

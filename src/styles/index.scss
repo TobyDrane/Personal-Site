@@ -1,0 +1,111 @@
+.master-layout {
+  background-color: #FFF;
+  background-repeat: no-repeat;
+  // background-image: url(https://res.cloudinary.com/dn7lqpl1x/image/upload/v1631080208/wrapped_k7g6ev.svg);
+  background-position: top right;
+  background-size: 75%;
+  color: #1a1b1f;
+  min-height: 100vh;
+
+  .header {
+    height: 70px;
+    padding: 30px 70px;
+
+    .logo {
+      float: left;
+      img {
+        border-radius: 50px;
+        vertical-align: middle;
+      }
+    }
+
+    .menu {
+      display: block;
+      float: right;
+      margin-top: 10px;
+
+      a.active {
+        opacity: 1;
+      }
+      a:hover {
+        opacity: 1;
+      }
+      a {
+        text-decoration: none;
+        padding-top: 9px;
+        padding-bottom: 9px;
+        opacity: 0.6;
+        font-size: 12px;
+        line-height: 20px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-left: 40px;
+        color: #1a1b1f !important;
+        cursor: pointer;
+      }
+    }
+  }
+  
+  .master-container {
+    max-width: 1140px;
+    width: 100%;
+    padding-right: var(--bs-gutter-x,150px);
+    padding-left: var(--bs-gutter-x,150px);
+    margin-right: auto;
+    margin-left: auto;
+
+    font-weight: 100;
+    font-size: 20px;
+    color: #404852;
+    line-height: 30px;
+  
+    .hello {
+      font-weight: 600;
+      font-size: 80px;
+      line-height: 120px;
+      letter-spacing: -4px;
+      padding-right: 0px;
+      margin-bottom: 10px;
+      margin-top: 10px;
+    }
+
+    .body {
+      max-width: 80%;
+    }
+
+    .about-body, .body {
+      a {
+        text-decoration: none;
+        color: #404852;
+        opacity: 1;
+        font-weight: 400;
+      }
+    }
+  }
+
+  .footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    background-color: #1a1b1f;
+    padding: 15px 0px !important;
+    text-align: center;
+
+    img {
+      width: 1em;
+      height: 1em;
+      margin: 0px 0.05em 0px 0.1em;
+      vertical-align: -0.1em;
+    }
+
+    p {
+      font-size: 12px;
+      font-weight: 400;
+      margin: 0 !important;
+      opacity: .9;
+      color: #FFF;
+    }
+  }
+}
+

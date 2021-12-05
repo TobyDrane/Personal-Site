@@ -134,6 +134,9 @@ const BlogEditor = ({ blogItem }) => {
     setComponentState({ ...componentState, publishModalShown: true })
   }
 
+  console.log(blogItem)
+  console.log(editorState.getCurrentContent())
+
   return (
     <div className="create-blog-wrapper">
       <div className="menu">
