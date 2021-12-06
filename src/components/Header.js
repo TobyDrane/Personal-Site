@@ -53,6 +53,7 @@ const Header = () => {
               locationPath={pathname}
               value="Blogs"
             />
+            <MenuItem hrefPath="/cv/" locationPath={pathname} value="CV" />
             <MenuItem
               hrefPath="mailto:tobydrane@gmail.com"
               locationPath={pathname}
