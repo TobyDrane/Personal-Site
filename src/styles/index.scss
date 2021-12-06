@@ -6,6 +6,8 @@
   background-size: 75%;
   color: #1a1b1f;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 
   .header {
     height: 70px;
@@ -49,11 +51,14 @@
   
   .master-container {
     max-width: 1140px;
-    width: 100%;
-    padding-right: var(--bs-gutter-x,150px);
-    padding-left: var(--bs-gutter-x,150px);
+    padding-right: var(--bs-gutter-x,20px);
+    padding-left: var(--bs-gutter-x,20px);
     margin-right: auto;
     margin-left: auto;
+    margin-bottom: 100px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
 
     font-weight: 100;
     font-size: 20px;
@@ -75,6 +80,16 @@
     }
 
     .about-body, .body {
+      display: flex;
+      flex-direction: column;
+
+      p {
+        font-weight: 100;
+        font-size: 20px;
+        color: #404852;
+        line-height: 30px;
+      }
+
       a {
         text-decoration: none;
         color: #404852;
@@ -85,7 +100,7 @@
   }
 
   .footer {
-    position: absolute;
+    margin-top: auto;
     width: 100%;
     bottom: 0;
     background-color: #1a1b1f;
@@ -109,3 +124,58 @@
   }
 }
 
+.cv-form {
+  padding-top: 25px;
+  margin-top: 25px;
+  text-align: left;
+  border-top: solid 1px #959b9f;
+  
+  .response-message {
+    color: $color-red;
+  }
+
+  .inputs {
+    max-width: 350px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+
+    label {
+      font-weight: 300;
+      font-size: 20px;
+      color: #404852;
+      margin-bottom: 10px;
+    }
+
+    input {
+      width: 100%;
+      outline: none;
+      border: 1px #aaa solid;
+      padding: 6px 10px;
+      color: #404852;
+      font-weight: 100;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+  }
+
+  .buttons {
+    max-width: 350px;
+    margin-top: 35px;
+
+    button {
+      color: #404852;
+      background: #FFF;
+      padding: 8px 15px;
+      border: 1px #aaa solid;
+      cursor: pointer;
+      text-align: right;
+      font-weight: 100;
+      font-size: 16px;
+    }
+
+    button:hover {
+      border: 1px $color-gray solid; 
+    }
+  }
+}

@@ -27,18 +27,27 @@ const Home = ({ data }) => {
     <Layout>
       <SEO />
       <div className="master-container">
-        <div className="hello">Toby Drane</div>
-        <div className="body">
-          I work as a Data Engineer in London, having previously studied a MSc
-          in Data Science & Machine Learning from UCL.
-          <br></br>
-          <br></br>I have interests around supervised and statistical based
-          machine learning systems and the theoretical mathematics that underpin
-          AI. Although my interests fall into many various realms outside AI
-          such as political theory, strategy and campaigns and finance.
-          <br></br>
-          <br></br>I blog about a wide ranging variety of topics, all of which
-          are recorded <a href="blogs">here</a>.
+        <div className="home-container">
+          <div className="hello">Toby Drane</div>
+          <div className="body">
+            <p>
+              I work as a Data Scientist and Data Engineer in London, having
+              previously studied a MSc in Data Science & Machine Learning from
+              UCL.
+            </p>
+            <br></br>
+            <p>
+              I have interests around supervised and statistical based machine
+              learning systems and the theoretical mathematics that underpin AI.
+              Although my interests fall into many various realms outside AI
+              such as political theory, strategy and campaigns and finance.
+            </p>
+            <br></br>
+            <p>
+              I blog about a wide ranging variety of topics, all of which are
+              recorded <a href="blogs">here</a>.
+            </p>
+          </div>
         </div>
       </div>
     </Layout>
