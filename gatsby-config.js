@@ -1,12 +1,13 @@
-const activeEnv = process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV || "development"
+const activeEnv =
+  process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV || 'development'
 
 console.log(`Using environment config: '${activeEnv}'`)
 
-require("dotenv").config({
+require('dotenv').config({
   path: `.env.${activeEnv}`,
 })
 
-const path = require('path');
+const path = require('path')
 
 module.exports = {
   siteMetadata: {
@@ -14,7 +15,7 @@ module.exports = {
     description: `Toby Drane personal site - currently MSc Data Science & Machine Learning at UCL.`,
     author: `Toby Drane`,
     siteUrl: `https://tobydrane.com`,
-    twitterUsername: `@toby_dev_drane`
+    twitterUsername: `@toby_dev_drane`,
   },
   plugins: [
     `gatsby-plugin-sass`,
@@ -37,7 +38,7 @@ module.exports = {
       options: {
         name: `data`,
         path: `${__dirname}/src/data`,
-      }
+      },
     },
     {
       resolve: `gatsby-plugin-mdx`,
@@ -48,25 +49,26 @@ module.exports = {
             resolve: `gatsby-remark-images`,
             options: {
               maxWidth: 640,
-              linkImagesToOriginal: false
-            }
+              linkImagesToOriginal: false,
+            },
           },
           {
             resolve: `gatsby-remark-katex`,
             options: {
               // Add any KaTeX options from https://github.com/KaTeX/KaTeX/blob/master/docs/options.md here
-              strict: `ignore`
-            }
+              strict: `ignore`,
+            },
           },
           {
             resolve: `gatsby-remark-prismjs`,
-          }
-        ]
-      }
+          },
+        ],
+      },
     },
     {
-      resolve: "gatsby-plugin-firebase",
+      resolve: 'gatsby-plugin-firebase',
       options: {
+        feature: { analytics: true },
         credentials: {
           apiKey: process.env.FIREBASE_API_KEY,
           authDomain: process.env.FIREBASE_AUTH_DOMAIN,
@@ -74,19 +76,20 @@ module.exports = {
           projectId: process.env.FIREBASE_PROJECT_ID,
           storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
           messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-          appId: process.env.FIREBASE_APP_ID
-        }
-      }
-    },  
+          appId: process.env.FIREBASE_APP_ID,
+          measurementId: process.env.MEASUREMENT_ID,
+        },
+      },
+    },
     {
       resolve: `gatsby-plugin-google-analytics`,
       options: {
         trackingId: `UA-175723606-1`,
-        head: false
-      }
+        head: false,
+      },
     },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
-    `gatsby-plugin-fontawesome-css`
+    `gatsby-plugin-fontawesome-css`,
   ],
 }
