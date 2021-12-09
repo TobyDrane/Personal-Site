@@ -13,10 +13,11 @@ const CV = () => {
     firebase
       .firestore()
       .collection('cv-requests')
-      .doc('emails')
+      .doc(formFields.email)
       .set({
         email: formFields.email,
         sent: false,
+        requested_at: new Date().toISOString(),
       })
       .then(() => {
         setReturnMessage('Request sent!')
