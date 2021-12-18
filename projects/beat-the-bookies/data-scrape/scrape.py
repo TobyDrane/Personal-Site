@@ -29,8 +29,8 @@ def get_teams_get_date(master_content):
   home = game_name.split('-')[0].strip()
   away = game_name.split('-')[1].strip()
   game_date = str(master_content.find('p').get_text())
-  game_date = game_date.replace('Yesterday, ', '')
-  
+  game_date = game_date.split(',', 1)[1].strip()
+
   return home, away, game_date, game_name
 
 def get_winner(master_content):
