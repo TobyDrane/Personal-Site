@@ -64,6 +64,7 @@ def main():
     upload_dataframe(dataframe)
   # dataframe.to_csv('test.csv')
 
+  driver.quit()
   return 'Scraped!', 200
 
 if __name__ == '__main__':

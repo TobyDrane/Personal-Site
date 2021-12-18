@@ -70,7 +70,7 @@ def get_odds(odds_child):
       home_odds_string = str(tr_child[1].find('div').get_text())
     except Exception:
       home_odds_string = str(tr_child[1].find('a').get_text())
-    home_odds = fraction_to_float(home_odds_string)
+    home_odds = (fraction_to_float(home_odds_string) / 100.0)
     print(home_odds_string)
     print(home_odds)
 
@@ -78,13 +78,13 @@ def get_odds(odds_child):
       draw_odds_string = str(tr_child[2].find('div').get_text())
     except Exception:
       draw_odds_string = str(tr_child[2].find('a').get_text())
-    draw_odds = fraction_to_float(draw_odds_string)
+    draw_odds = (fraction_to_float(draw_odds_string) / 100.0)
 
     try:
       away_odds_string = str(tr_child[3].find('div').get_text())
     except Exception:
       away_odds_string = str(tr_child[3].find('a').get_text())
-    away_odds = fraction_to_float(away_odds_string)
+    away_odds = (fraction_to_float(away_odds_string) / 100.0)
 
     return bookie, home_odds, away_odds, draw_odds
   else:
@@ -130,5 +130,4 @@ def parse_single_url(driver, url):
     print('Error', e)
     raise(e)
   finally:
-    driver.quit()
     return np.asarray(data)
