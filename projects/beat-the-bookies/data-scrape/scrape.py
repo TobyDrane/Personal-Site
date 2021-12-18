@@ -2,6 +2,7 @@ import os
 import time
 import numpy as np
 from datetime import datetime
+from dateutil import parser
 from fractions import Fraction
 from bs4 import BeautifulSoup
 from selenium.webdriver.support.ui import WebDriverWait
@@ -30,6 +31,7 @@ def get_teams_get_date(master_content):
   away = game_name.split('-')[1].strip()
   game_date = str(master_content.find('p').get_text())
   game_date = game_date.split(',', 1)[1].strip()
+  game_date = parser.parse(game_date)
 
   return home, away, game_date, game_name
 
