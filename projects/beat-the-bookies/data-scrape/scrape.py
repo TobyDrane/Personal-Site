@@ -1,10 +1,12 @@
 import os
 import time
+import numpy as np
 from datetime import datetime
 from fractions import Fraction
 from bs4 import BeautifulSoup
 from selenium.webdriver.support.ui import WebDriverWait
 
+"""
 def fraction_to_float(frac_str):
     try:
         return float(frac_str)
@@ -17,6 +19,10 @@ def fraction_to_float(frac_str):
             whole = 0
         frac = float(num) / float(denom)
         return whole - frac if whole < 0 else whole + frac
+"""
+
+def fraction_to_float(string):
+  return float(sum(Fraction(s) for s in string.split()))
 
 def get_teams_get_date(master_content):
   game_name = str(master_content.find('h1').get_text())
@@ -29,8 +35,8 @@ def get_teams_get_date(master_content):
 
 def get_winner(master_content):
   try:
-    if str(master_content).find(class_='_result').find('strong').get_text():
-      result_string = str(master_content).find(class_='_result').find('strong').get_text()
+    if str(master_content.find(class_='_result').find('strong').get_text()):
+      result_string = str(master_content.find(class_='_result').find('strong').get_text())
       home_score = int(result_string.split(':')[0])
       
       if ('penalties' in result_string.split(':')[1]):
@@ -45,23 +51,28 @@ def get_winner(master_content):
         winner = 'away'
       else:
         winner = 'draw'
+    else:
+      winner = None
 
   except Exception as e:
     winner = None
+
   return winner
 
 def get_odds(odds_child):
   tr_child = list(odds_child.children)
 
   if (len(tr_child) > 4):
-    bookie = str(tr_child[0].find(class_='name').get_text())
-    # bookie = str(tr_child[0].findAll('a')[1].get_text())
+    # bookie = str(tr_child[0].find(class_='name').get_text())
+    bookie = str(tr_child[0].findAll('a')[1].get_text())
     
     try:
       home_odds_string = str(tr_child[1].find('div').get_text())
     except Exception:
       home_odds_string = str(tr_child[1].find('a').get_text())
     home_odds = fraction_to_float(home_odds_string)
+    print(home_odds_string)
+    print(home_odds)
 
     try:
       draw_odds_string = str(tr_child[2].find('div').get_text())
@@ -120,6 +131,4 @@ def parse_single_url(driver, url):
     raise(e)
   finally:
     driver.quit()
-    return data
-
-
+    return np.asarray(data)

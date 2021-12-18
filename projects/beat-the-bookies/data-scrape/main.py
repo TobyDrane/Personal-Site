@@ -45,8 +45,8 @@ def main():
   if (len(urls) > 0):
     for single_url in urls:
       single_data = parse_single_url(driver, single_url)
-      time.sleep(2)
-      single_data = np.asarray(single_data)
+      print(single_data)
+      time.sleep(1)
       
       if data.size != 0: data = np.concatenate((data, single_data))
       else: data = single_data
