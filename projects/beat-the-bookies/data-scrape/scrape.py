@@ -6,6 +6,8 @@ from dateutil import parser
 from fractions import Fraction
 from bs4 import BeautifulSoup
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 
 """
 def fraction_to_float(frac_str):
@@ -92,11 +94,14 @@ def get_odds(odds_child):
   else:
     return None, None, None, None
 
-def parse_single_url(driver, url):
+def parse_single_url(chrome_options, url):
   """
   Takes a single OddsPortal game URL and scrapes all data about the game, score if
   applicable and bookies odds
   """
+  if (os.getenv('env') == 'local'): driver = webdriver.Chrome(ChromeDriverManager().install())
+  else: driver = webdriver.Chrome(options=chrome_options)
+
   data = []
   try:
     driver.set_window_size(800, 600)
@@ -132,4 +137,5 @@ def parse_single_url(driver, url):
     print('Error', e)
     raise(e)
   finally:
+    driver.quit()
     return np.asarray(data)

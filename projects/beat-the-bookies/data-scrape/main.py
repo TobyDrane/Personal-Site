@@ -8,8 +8,6 @@ from io_handler import pull_urls
 from io_handler import upload_dataframe
 from scrape import parse_single_url
 from flask import Flask
-from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
 
 load_dotenv()
 app = Flask(__name__)
@@ -32,9 +30,6 @@ def set_chrome_options():
 
 chrome_options = set_chrome_options()
 
-if (os.getenv('env') == 'local'): driver = webdriver.Chrome(ChromeDriverManager().install())
-else: driver = webdriver.Chrome(options=chrome_options)
-
 @app.route('/', methods=['GET'])
 def main():
   print ('Main Called')
@@ -44,7 +39,7 @@ def main():
 
   if (len(urls) > 0):
     for single_url in urls:
-      single_data = parse_single_url(driver, single_url)
+      single_data = parse_single_url(chrome_options, single_url)
       print(single_data)
       time.sleep(1)
       
@@ -64,7 +59,6 @@ def main():
     upload_dataframe(dataframe)
   # dataframe.to_csv('test.csv')
 
-  driver.quit()
   return 'Scraped!', 200
 
 if __name__ == '__main__':
