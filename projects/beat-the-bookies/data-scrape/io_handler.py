@@ -62,7 +62,7 @@ def upload_dataframe(dataframe):
     client = storage.Client()
     bucket = client.get_bucket(os.getenv('bucket'))
     time = datetime.now().isoformat()
-    bucket.blob(f'odds-portal-raw/odds-portal-raw-{time}.csv') \
-      .upload_from_string(dataframe.to_csv(index = False), 'text/csv')
+    bucket.blob(f'odds-portal-raw/odds-portal-raw-{time}.json') \
+      .upload_from_string(dataframe.to_json(orient = 'records'), 'text/json')
   except Exception as e:
     raise(e)
