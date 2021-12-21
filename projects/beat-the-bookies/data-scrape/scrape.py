@@ -109,7 +109,7 @@ def parse_single_url(chrome_options, url):
     driver.get(str(url))
     print(f'Scraping {url}')
     soup = BeautifulSoup(driver.page_source, 'html.parser')
-    time.sleep(2)
+    time.sleep(5)
 
     master_content = soup.find(id='col-content')
     odds_table = master_content.find(class_='table-main').find('tbody')
@@ -137,5 +137,4 @@ def parse_single_url(chrome_options, url):
     print('Error', e)
     raise(e)
   finally:
-    driver.quit()
     return np.asarray(data)
