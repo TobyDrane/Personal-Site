@@ -90,7 +90,7 @@ def main():
     dataframe = dataframe_consensus[
       [
         'game_date', 'game_name', 'home_odds', 'away_odds', 'draw_odds', 'max_home_bookie', 'max_away_bookie', 'max_draw_bookie', 
-        'home_odds_max', 'away_odds_max', 'draw_odds_max', 'winner'
+        'home_odds_max', 'away_odds_max', 'draw_odds_max'
       ]
     ]
     upload_dataframe(dataframe)
