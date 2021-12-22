@@ -73,17 +73,17 @@ def main():
       rsuffix='_max'
     )
 
-    dataframe_max['max_home_bookie'] = None
-    dataframe_max['max_away_bookie'] = None
-    dataframe_max['max_draw_bookie'] = None
+    for i, frame in dataframe_max.groupby(by=['game_name']):
+      a = i
+      b = frame
+      x = frame['bookie'][(frame['home_odds'] == frame['home_odds_max'])].to_string(index = False)
+      y = frame['bookie'][(frame['away_odds'] == frame['away_odds_max'])].to_string(index = False)
+      z = frame['bookie'][(frame['draw_odds'] == frame['draw_odds_max'])].to_string(index = False)
 
-    for i in dataframe_max.groupby(by=['game_name']):
-      (a, b) = i
-
-      dataframe_max.loc[(dataframe_max.game_name == a), 'max_home_bookie'] = b['bookie'][(b['home_odds'] == b['home_odds_max'])].any()
-      dataframe_max.loc[(dataframe_max.game_name == a), 'max_draw_bookie'] = b['bookie'][(b['draw_odds'] == b['draw_odds_max'])].any()
-      dataframe_max.loc[(dataframe_max.game_name == a), 'max_away_bookie'] = b['bookie'][(b['away_odds'] == b['away_odds_max'])].any()
-
+      dataframe_max.loc[dataframe_max['game_name'] == a, 'max_home_bookie'] = x
+      dataframe_max.loc[dataframe_max['game_name'] == a, 'max_away_bookie'] = y
+      dataframe_max.loc[dataframe_max['game_name'] == a, 'max_draw_bookie'] = z
+  
     dataframe_consensus = dataframe_max.groupby(by=['game_date', 'game_name', 'max_draw_bookie',	'max_away_bookie',	'max_home_bookie'], as_index=False).mean()
 
     upload_dataframe(dataframe_consensus)
