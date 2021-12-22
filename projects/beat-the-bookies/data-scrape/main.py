@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.options import Options
 from io_handler import pull_urls
 from io_handler import upload_dataframe
 from scrape import parse_single_url
-from flask import Flask
+from flask import Flask, request
 
 load_dotenv()
 app = Flask(__name__)
@@ -30,10 +30,12 @@ def set_chrome_options():
 
 chrome_options = set_chrome_options()
 
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['POST'])
 def main():
   print ('Main Called')
-  urls = pull_urls(os.getenv('acknowledge_messages'))
+  #urls = pull_urls(os.getenv('acknowledge_messages'))
+  request_body = request.get_json()
+  urls = request_body['urls']
   data = np.array([])
   print('Pulling urls', urls)
 
