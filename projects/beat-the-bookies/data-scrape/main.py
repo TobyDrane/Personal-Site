@@ -56,38 +56,7 @@ def main():
       ]  
     )
 
-    dataframe['bookie'] = dataframe['bookie'].astype('str')
-    dataframe_copy = dataframe.copy()
-    dataframe_copy['game_date'] = pd.to_datetime(dataframe_copy['game_date'])
-    dataframe_copy['home_odds'] = pd.to_numeric(dataframe_copy['home_odds'])
-    dataframe_copy['away_odds'] = pd.to_numeric(dataframe_copy['away_odds'])
-    dataframe_copy['draw_odds'] = pd.to_numeric(dataframe_copy['draw_odds'])
-
-    # Calculate the consensus odds across different bookies for given games on given days
-    dataframe_consensus = dataframe_copy.groupby(by=['game_date', 'game_name']).mean()
-
-    # Calculate the max odds for different outcomes across bookies for given games on given days
-    dataframe_max = dataframe_copy.join(
-      dataframe_copy.groupby(by=['game_date', 'game_name'])[['home_odds', 'away_odds', 'draw_odds']].max(),
-      on=['game_date', 'game_name'],
-      rsuffix='_max'
-    )
-
-    for i, frame in dataframe_max.groupby(by=['game_name']):
-      a = i
-      b = frame
-      x = frame['bookie'][(frame['home_odds'] == frame['home_odds_max'])].to_string(index = False)
-      y = frame['bookie'][(frame['away_odds'] == frame['away_odds_max'])].to_string(index = False)
-      z = frame['bookie'][(frame['draw_odds'] == frame['draw_odds_max'])].to_string(index = False)
-
-      dataframe_max.loc[dataframe_max['game_name'] == a, 'max_home_bookie'] = x
-      dataframe_max.loc[dataframe_max['game_name'] == a, 'max_away_bookie'] = y
-      dataframe_max.loc[dataframe_max['game_name'] == a, 'max_draw_bookie'] = z
-  
-    dataframe_consensus = dataframe_max.groupby(by=['game_date', 'game_name', 'max_draw_bookie',	'max_away_bookie',	'max_home_bookie'], as_index=False).mean()
-
-    upload_dataframe(dataframe_consensus)
-  # dataframe.to_csv('test.csv')
+    upload_dataframe(dataframe)
 
   return 'Scraped!', 200
 
