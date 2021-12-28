@@ -6,7 +6,8 @@ from dotenv import load_dotenv
 from selenium.webdriver.chrome.options import Options
 from io_handler import pull_urls
 from io_handler import upload_dataframe
-from scrape import parse_single_url
+#from scrape import parse_single_url
+from scrape2 import parse_single_url
 from flask import Flask, request
 
 load_dotenv()
