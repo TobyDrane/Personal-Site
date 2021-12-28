@@ -48,6 +48,8 @@ def parse_single_url(chrome_options, url):
     soup = BeautifulSoup(driver.page_source, 'html.parser')
     time.sleep(2)
 
+    print(soup)
+    print(header_content)
     header_content = soup.find(id='subevent-header')
 
     home, away, game_date, game_name = get_teams_get_date(header_content)
