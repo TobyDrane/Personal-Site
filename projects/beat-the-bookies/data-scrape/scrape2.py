@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 import numpy as np
 
@@ -39,12 +40,13 @@ def parse_single_url(chrome_options, url):
 
   data = []
   try:
-    driver.set_window_size(2400, 800)
+    # driver.set_window_size(2400, 800)
     driver.get(str(url))
     print(f'Scraping {url}')
+    time.sleep(2)
 
     soup = BeautifulSoup(driver.page_source, 'html.parser')
-    time.sleep(4)
+    time.sleep(2)
 
     header_content = soup.find(id='subevent-header')
 
@@ -86,7 +88,8 @@ def parse_single_url(chrome_options, url):
         print('Bookies list mismatched error')
 
   except Exception as e:
-    print('Error', e)
+    exc_type, exc_obj, exc_tb = sys.exc_info()
+    print(exc_type, exc_tb.tb_lineno)
     raise(e)
   finally:
     return np.asarray(data)

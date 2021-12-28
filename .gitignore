@@ -76,3 +76,4 @@ projects/beat-the-bookies/data-scrape/tobydrane-personal-site-02d93ba19ceb.json
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+projects/beat-the-bookies/data-scrape/__pycache__/
