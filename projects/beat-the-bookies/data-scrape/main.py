@@ -19,11 +19,14 @@ def set_chrome_options():
   Chrome options for headless browser is enabled.
   """
   chrome_options = Options()
-  chrome_options.add_argument("--headless")
-  chrome_options.add_argument("--no-sandbox")
+  # chrome_options.add_argument("--headless")
+  # chrome_options.add_argument("--no-sandbox")
+  chrome_options.add_argument('--disable-blink-features=AutomationControlled')
   chrome_options.add_argument("--disable-gpu")
   chrome_options.add_argument("window-size=1024,768")
   chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36")
+  chrome_options.add_experimental_option('excludeSwitches', ['enable-automation'])
+  chrome_options.add_experimental_option('useAutomationExtension', False)
   #chrome_options.add_argument("--disable-dev-shm-usage")
   chrome_prefs = {}
   chrome_options.experimental_options["prefs"] = chrome_prefs
