@@ -87,12 +87,7 @@ def get_game_details(header_json, data_json):
 
 def parse_single_url(chrome_options, url):
   if (os.getenv('env') == 'local'): driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
-  else:
-    # driver = webdriver.Chrome(options=chrome_options)
-    driver = cloudscraper.create_scraper(browser = {
-      'browser': 'chrome',
-      'platform': 'darwin'
-    }, debug=True)
+  else: driver = webdriver.Chrome(options=chrome_options)
 
   master_data = []
   try:
