@@ -139,4 +139,5 @@ def parse_single_url(chrome_options, url):
     print(e)
     raise(e)
   finally:
+    driver.quit()
     return np.asarray(master_data)
