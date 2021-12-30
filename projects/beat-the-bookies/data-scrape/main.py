@@ -47,7 +47,7 @@ def main():
   if (len(urls) > 0):
     for single_url in urls:
       single_data = parse_single_url(chrome_options, single_url)
-      print(single_data)
+      # print(single_data)
       time.sleep(1)
       
       if data.size != 0: data = np.concatenate((data, single_data))
@@ -62,6 +62,8 @@ def main():
           'bookie', 'home_odds', 'away_odds', 'draw_odds', 'winner'
       ]  
     )
+
+    print(dataframe.info())
 
     upload_dataframe(dataframe)
 

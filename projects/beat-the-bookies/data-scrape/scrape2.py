@@ -1,97 +1,147 @@
+from logging import debug
 import os
+from re import sub
 import sys
 import time
 import numpy as np
+import cloudscraper
+import json
+import subprocess
 
 from fractions import Fraction
 from dateutil import parser
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from webdriver_manager import chrome
 from webdriver_manager.chrome import ChromeDriverManager
 
-def get_teams_get_date(header_content):
-  header_content_inner = header_content.find_all('div')[0]
-  game_name = header_content_inner.find_all('h1')[0].get_text()
-  game_name = game_name.replace('Betting Odds', '')
-  home = game_name.split('vs')[0].strip()
-  away = game_name.split('vs')[1].strip()
-  game_date = header_content_inner.find_all('span')[-1].get_text()
-  game_date = parser.parse(game_date.split('(')[0].strip())
+identifiers_dictionary = {
+  'B3': 'Bet365',
+  'SK': 'Skybet',
+  'PP': 'Paddy Power',
+  'WH': 'William Hill',
+  'EE': '888sport',
+  'FB': 'Betfair Sportsbook',
+  'VC': 'Bet Victor',
+  'CE': 'Coral',
+  'UN': 'Unibet',
+  'MI': 'Mansion Bet',
+  'FR': 'Betfred',
+  'RK': 'Smarkets Sportsbook',
+  'WA': 'Betway',
+  'BY': 'Boyle Sports',
+  'OE': '10Bet',
+  'SA': 'Sport Nation',
+  'NV': 'Novibet',
+  'SI': 'Sporting Index',
+  'SX': 'Spreadex',
+  'QN': 'Quinnbet',
+  'LD': 'Ladbrokes',
+  'RM': 'Parimatch',
+  'VT': 'VBet',
+  'BF': 'Betfair',
+  'MK': 'Smarkets',
+  'MA': 'Matchbook'
+}
+
+def get_market_id(json):
+  markets = json['bestOdds']['markets']
+  entities = markets['entities']
+  keys = entities.keys()
+  for key in keys:
+    current = entities[key]
+    if (current['marketTypeName'] == 'Win Market'):
+      return current['ocMarketId']
+
+def get_bet_ids(market_id, json):
+  bets = json['bestOdds']['bets']
+  entities = bets['entities']
+  keys = entities.keys()
+  ids = {}
+  for key in keys:
+    current = entities[key]
+    if (current['marketId'] == market_id):
+      bet_name = current['betName']
+      ids[bet_name] = current['ocBetId']
+
+  return ids
+
+def get_odds_dict(bet_ids, json):
+  odds = json['bestOdds']['odds']
+  odds_dict = {}
+  keys = bet_ids.keys()
+  for key in keys:
+    id = bet_ids[key]
+    odds_dict[key] = odds.get(str(id))
+
+  return odds_dict
+
+def get_game_details(header_json, data_json):
+  game_name = header_json.get('subeventName')
+  game_date = header_json.get('subeventStartTime')
+  data = data_json.get('bestOdds')
+  home = data.get('subeventConfig').get('homeTeamName')
+  away = data.get('subeventConfig').get('awayTeamName')
 
   return home, away, game_date, game_name
 
-def get_odds(item):
-  bookie, home_odds, draw_odds, away_odds = item
-  bookie_name = bookie.get('title', None)
-
-  home_odds_string = str(home_odds.get_text())
-  draw_odds_string = str(draw_odds.get_text())
-  away_odds_string = str(away_odds.get_text())
-
-  home_odds_float = 1 + round(float(Fraction(home_odds_string)), 2)
-  draw_odds_float = 1 + round(float(Fraction(draw_odds_string)), 2)
-  away_odds_float = 1 + round(float(Fraction(away_odds_string)), 2)
-
-  return bookie_name, home_odds_float, draw_odds_float, away_odds_float
-
 def parse_single_url(chrome_options, url):
-  if (os.getenv('env') == 'local'): driver = webdriver.Chrome(ChromeDriverManager().install())
-  else: driver = webdriver.Chrome(options=chrome_options)
+  if (os.getenv('env') == 'local'): driver = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+  else:
+    # driver = webdriver.Chrome(options=chrome_options)
+    driver = cloudscraper.create_scraper(browser = {
+      'browser': 'chrome',
+      'platform': 'darwin'
+    }, debug=True)
 
-  data = []
+  master_data = []
   try:
     # driver.set_window_size(2400, 800)
     driver.get(str(url))
     print(f'Scraping {url}')
     time.sleep(2)
 
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
-    time.sleep(2)
+    header = driver.find_element_by_xpath('//script[@data-hypernova-key="subeventheader"]')
+    header_json_raw = header.get_attribute('innerText').replace('<!--', '').replace('-->', '')
+    header_json = json.loads(str(header_json_raw))
 
-    print(soup)
-    print(header_content)
-    header_content = soup.find(id='subevent-header')
+    data = driver.find_element_by_xpath('//script[@data-hypernova-key="subeventmarkets"]')
+    data_json_raw = data.get_attribute('innerText').replace('<!--', '').replace('-->', '')
+    data_json = json.loads(str(data_json_raw))
 
-    home, away, game_date, game_name = get_teams_get_date(header_content)
+    home, away, game_date, game_name = get_game_details(header_json, data_json)
+    market_id = get_market_id(data_json)
+    bet_ids = get_bet_ids(market_id, data_json)
+    odds = get_odds_dict(bet_ids, data_json)
 
-    bookies_content = soup.select('div[class*="BookmakersRowOuterWrapper_"]')
-    odds_content = soup.select('div[class*="oddsAreaWrapper_"]')
-    if (len(bookies_content) == 1 and len(odds_content) == 3):
-      home_odds_list = list(odds_content[0].find_all('button'))
-      draw_odds_list = list(odds_content[1].find_all('button'))
-      away_odds_list = list(odds_content[2].find_all('button'))
+    odds_keys = list(odds.keys())
+    bookies_ids_list = list(odds[odds_keys[0]].keys())
 
-      bookies_content = list(bookies_content[0].children)[0]
-      bookies_list = list(bookies_content.find_all('a'))
-
-      if ((len(bookies_list) / 2) == len(home_odds_list)):
-        if (len(home_odds_list) == len(draw_odds_list) == len(away_odds_list)):
-          bookies_list = bookies_list[1::2]
-          odds_table = zip(bookies_list, home_odds_list, draw_odds_list, away_odds_list)
-
-          for item in odds_table:
-            bookie, home_odds, draw_odds, away_odds = get_odds(item)
-            current_data_row = [
-              game_date,
-              game_name,
-              home,
-              away,
-              bookie,
-              home_odds,
-              away_odds,
-              draw_odds,
-              None
-            ]
-            data.append(current_data_row)
-
-        else:
-          print('Odds list mismatched error')
-      else:
-        print('Bookies list mismatched error')
+    for identifier in bookies_ids_list:
+      bookie_id_home = odds.get(home).get(identifier)
+      bookie_id_away = odds.get(away).get(identifier)
+      bookie_id_draw = odds.get('Draw').get(identifier)
+      bookie = identifiers_dictionary.get(identifier)
+      home_odds = bookie_id_home.get('oddsDecimal')
+      away_odds = bookie_id_away.get('oddsDecimal')
+      draw_odds = bookie_id_draw.get('oddsDecimal')
+      current_data_row = [
+        game_date,
+        game_name,
+        home,
+        away,
+        bookie,
+        home_odds,
+        away_odds,
+        draw_odds,
+        None
+      ]
+      master_data.append(current_data_row)
 
   except Exception as e:
     exc_type, exc_obj, exc_tb = sys.exc_info()
     print(exc_type, exc_tb.tb_lineno)
+    print(e)
     raise(e)
   finally:
-    return np.asarray(data)
+    return np.asarray(master_data)

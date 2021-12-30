@@ -13,6 +13,7 @@ python-dotenv = "*"
 google-cloud-pubsub = "*"
 google-cloud-storage = "*"
 flask = "*"
+cloudscraper = "*"
 
 [dev-packages]
 
