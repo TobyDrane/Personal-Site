@@ -3,9 +3,9 @@ import numpy as np
 from google.cloud import storage
 
 def expected_payout(df, result):
-  alpha = 0.05
+  alpha = 0.03
   p_consensus = (1 / df[f'{result}_odds'])
-  return (p_consensus - alpha) * df[f'{result}_odds_max'] - 1
+  return (p_consensus - alpha) * (df[f'{result}_odds_max'] - 1)
 
 def function_trigger(event, context):
   try:
@@ -44,8 +44,9 @@ def function_trigger(event, context):
     
           # The list of valid bookies that we can place Bets on
           valid_bookies = [
-            'bet-at-home', 'William Hill', 'bwin', 'Coolbet', 'GGBET', \
-              'Marathonbet', 'Pinnacle', 'Unibet'
+            'Bet365', 'Skybet', 'Paddy Power', 'William Hill', '888sport', \
+              'Bet Victor', 'Betfair Sportsbook', 'Coral', 'Unibet', 'Mansion Bet', \
+                'Betfred', 'Betway', 'Boyle Sports', '10Bet', 'Ladbrokes'
           ]
 
           bets = []

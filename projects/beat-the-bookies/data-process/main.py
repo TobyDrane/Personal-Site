@@ -8,8 +8,9 @@ def check_and_split(string):
   if (len(splits) > 1):
     # The list of valid bookies that we can place Bets on
     valid_bookies = [
-      'bet-at-home', 'William Hill', 'bwin', 'Coolbet', 'GGBET', \
-        'Marathonbet', 'Pinnacle', 'Unibet'
+      'Bet365', 'Skybet', 'Paddy Power', 'William Hill', '888sport', \
+        'Bet Victor', 'Betfair Sportsbook', 'Coral', 'Unibet', 'Mansion Bet', \
+          'Betfred', 'Betway', 'Boyle Sports', '10Bet', 'Ladbrokes'
     ]
     common = list(set(splits).intersection(valid_bookies))
     if (len(common) > 0): return common[0]
