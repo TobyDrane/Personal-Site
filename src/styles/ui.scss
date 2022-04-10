@@ -1,0 +1,28 @@
+.ui-button-light {
+  color: #404852;
+  background: white;
+  padding: 6px 12px;
+  border: 1px #aaa solid;
+  cursor: pointer;
+  text-align: right;
+  font-weight: 100;
+  font-size: 14px;
+}
+
+.ui-button-light:hover {
+  border: 1px $color-gray solid;
+}
+
+.ui-button-dark {
+  color: white;
+  background: #404852;
+  padding: 6px 12px;
+  border: 1px solid #404852;
+  text-align: right;
+  font-weight: 100;
+  font-size: 14px;
+}
+
+.ui-button-dark:hover {
+  background: #1a1b1f;
+}

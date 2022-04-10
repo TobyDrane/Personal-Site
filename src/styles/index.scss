@@ -161,21 +161,6 @@
 
   .buttons {
     max-width: 350px;
-    margin-top: 35px;
-
-    button {
-      color: #404852;
-      background: #FFF;
-      padding: 8px 15px;
-      border: 1px #aaa solid;
-      cursor: pointer;
-      text-align: right;
-      font-weight: 100;
-      font-size: 16px;
-    }
-
-    button:hover {
-      border: 1px $color-gray solid; 
-    }
+    margin-top: 25px;
   }
 }
