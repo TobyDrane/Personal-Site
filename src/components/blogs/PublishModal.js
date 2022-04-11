@@ -49,16 +49,23 @@ const schemaConstants = {
   type: 'blog',
 }
 
-const PublishModal = ({ isShown, onRequestClose, JSONContent }) => {
+const PublishModal = ({ isShown, onRequestClose, JSONContent, blogItem }) => {
+  // If we have a current blog item, this means we are editing a previously created blog
+  // We need to set all the default values within the publish modal to these defaults
+  const title = blogItem ? blogItem.title : ''
+  const description = blogItem ? blogItem.description : ''
+  const date = blogItem ? blogItem.date : moment().format('YYYY-MM-DD')
+  const id = blogItem ? blogItem.id : uuidv4()
+
   // Data from the modal body form
-  const [bodyInputs, setBodyInputs] = useState({ title: '', description: '' })
+  const [bodyInputs, setBodyInputs] = useState({ title, description })
   // The blog schema is the full JSON we will push to firebase
   // NOTE: It is to be updated based on whether we publish as draft or not
   const [blogSchema, setBlogSchema] = useState({
     ...schemaConstants,
-    date: moment().format('YYYY-MM-DD'),
+    date,
     content: JSONContent,
-    id: uuidv4(),
+    id,
   })
 
   // Required to handle the blog state change for pushing to firebase
@@ -93,9 +100,10 @@ const PublishModal = ({ isShown, onRequestClose, JSONContent }) => {
   // Perform the pushing JSON to firebase storage
   const pushToFirebase = () => {
     const storage = firebase.storage()
-    const blogFile = storage.ref(
-      `blogs/${blogSchema.date}-${blogSchema.title}.json`
-    )
+    const blogFile = storage.ref(`blogs/${blogSchema.id}.json`)
+    // const blogFile = storage.ref(
+    //  `blogs/${blogSchema.date}-${blogSchema.title}.json`
+    //)
 
     // Push to storage
     blogFile

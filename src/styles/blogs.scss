@@ -134,7 +134,7 @@
     display: flex;
     justify-content: flex-end;
     width: 70% !important;
-    padding: 25px 20px;
+    padding: 8px;
 
     .button-publish {
       font-size: 1.1rem;
@@ -178,28 +178,16 @@
         cursor: pointer;
         text-align: right;
       }
-
-      .create-new-button {
-        font: 400;
-        color: #fff;
-        background: #1a1b1f;
-      }
-
-      .logout-button {
-        font-weight: 400;
-        color: #fff;
-        background: #1a1b1f;
-      }
     }
 
     .blog-list {
+      overflow-x: auto;
       margin-top: 5%;
       display: flex;
       flex-direction: column;
-      width: 60%;
+      width: 100%;
 
       .item {
-        padding: 5px;
         display: flex;
         flex-direction: row;
         margin-top: 15px;
@@ -207,57 +195,76 @@
         width: 100%;
       
         .item-content {
-          max-width: 60%;
+          width: 75%;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+
+          .blog-status-draft {
+            color: $color-red;
+            margin-left: 30px;
+            font-size: 14px;
+          }
         }
         
         .item-actions {
-          max-width: 40%;
-
-          button {
-            padding: 2px 2px;
-            margin-right: 10px;
-            border: 1px solid $color-gray;
-            background-color: white;
-            width: 55px;
-            height: 35px;
-            text-align: center;
-            cursor: pointer;
-          }
+          width: 20%;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
         }
       }
     }
 
     .toolbar {
       position: relative;
-      border-radius: 5px;
       align-items: center;
-      padding: 10px 20px;
-      background-color: $color-gray-lighter;
-      margin-bottom: 3%;
+      padding: 10px 0px;
+      background-color: white;
+      border-bottom: 1px solid #aaa;
+      margin-bottom: 2%;
       width: 70% !important;
 
       span + span {
         margin-left: 10px;
       }
 
+      .button.latex-insert-button {
+        color: #aaa;
+        font-size: 1.1rem;
+        font-weight: bold;
+      }
       .button {
         cursor: pointer;
         // color: #aaa;
         border: none;
-        background-color: $color-gray-lighter-accent;
+        border: 1px #aaa solid;
+        background-color: white;
         padding: 2px 5px;
         width: 35px;
         height: 35px;
         text-align: center;
 
         p {
-          color: $color-gray-light;
+          color: #aaa;
           font-size: 1.1rem;
           font-weight: bold;
         }
         &.active {
           p {
-            color: black;
+            color: #404852;
+          }
+        }
+
+        .image-upload {
+          > input {
+            display: none;
+          }
+          label {
+            cursor: pointer;
+            color: #aaa;
+            font-size: 1.1rem;
+            font-weight: bold;
           }
         }
       }

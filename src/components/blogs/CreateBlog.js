@@ -12,11 +12,25 @@ const BlogListItem = ({ item, onEditClick, onDeleteClick }) => {
     <div className="item" key={item.id}>
       <div className="item-content">
         <p>{item.title}</p>
-        <p>{item.private}</p>
+        <p
+          className={
+            item.private ? 'blog-status-draft' : 'blog-status-published'
+          }
+        >
+          {item.private ? 'Draft' : 'Published'}
+        </p>
       </div>
       <div className="item-actions">
-        <button onClick={() => onEditClick(item)}>Edit</button>
-        <button onClick={() => onDeleteClick(item)}>Delete</button>
+        <button
+          className="ui-button-light"
+          style={{ marginRight: '10px' }}
+          onClick={() => onEditClick(item)}
+        >
+          Edit
+        </button>
+        <button className="ui-button-light" onClick={() => onDeleteClick(item)}>
+          Delete
+        </button>
       </div>
     </div>
   )
@@ -92,19 +106,21 @@ const CreateBlog = ({ location }) => {
     return <BlogEditor />
   }
 
+  console.log(blogItems)
+
   return (
     <div className="master-container">
-      <div className="create-blog-wrapper">
+      <div className="create-blog-wrapper" style={{ width: '100%' }}>
         {firebaseErrorMessage ? (
           <p className="error-text">{firebaseErrorMessage}</p>
         ) : null}
 
         <div className="content">
           <div className="action-bar">
-            <button className="create-new-button" onClick={createNewBlog}>
+            <button className="ui-button-dark" onClick={createNewBlog}>
               Create Blog
             </button>
-            <button className="logout-button" onClick={logout}>
+            <button className="ui-button-dark" onClick={logout}>
               Logout
             </button>
           </div>

@@ -55,7 +55,9 @@ const CV = () => {
                   />
                 </div>
                 <div className="buttons">
-                  <button onClick={onFormSubmit}>Request</button>
+                  <button className="ui-button-light" onClick={onFormSubmit}>
+                    Request
+                  </button>
                 </div>
               </>
             )}
