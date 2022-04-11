@@ -110,7 +110,7 @@ const CreateBlog = ({ location }) => {
 
   return (
     <div className="master-container">
-      <div className="create-blog-wrapper" style={{ width: '70%' }}>
+      <div className="create-blog-wrapper" style={{ width: '100%' }}>
         {firebaseErrorMessage ? (
           <p className="error-text">{firebaseErrorMessage}</p>
         ) : null}
