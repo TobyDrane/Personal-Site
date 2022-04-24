@@ -2,11 +2,12 @@ import { isBrowser } from './services/auth'
 
 // Async firebase function to fetch all the blogs and return array
 // consisting of blog each blog data
-const firebaseFetchBlogs = async firebase => {
+const firebaseFetchBlogs = async (firebase, publicOnly) => {
   // Array of download urls
   const { urls, references } = await getBlogsDownloadURLS(firebase)
   const data = await downloadFiles(urls)
   const newData = data.map((item, index) => {
+    if (publicOnly && item.private) return []
     return { ...item, reference: references[index] }
   })
 
