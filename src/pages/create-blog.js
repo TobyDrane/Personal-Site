@@ -35,7 +35,7 @@ const CreateBlog = () => {
 
   if (authenticated.isInitializing) {
     return (
-      <Layout>
+      <Layout showHeader={false}>
         <p>Loading</p>
       </Layout>
     )

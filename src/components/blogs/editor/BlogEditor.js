@@ -5,12 +5,16 @@ import {
   convertFromRaw,
   convertToRaw,
   DefaultDraftBlockRenderMap,
-  EditorBlock,
+  Modifier,
+  getDefaultKeyBinding,
 } from 'draft-js'
 import Editor from '@draft-js-plugins/editor'
+import createKatexPlugin from 'draft-js-katex-plugin'
+import CodeUtils from 'draft-js-code'
+import PrismDecorator from 'draft-js-prism'
+import Prism from 'prismjs'
 import { convertToHTML } from 'draft-convert'
 import Immutable from 'immutable'
-import createKatexPlugin from 'draft-js-katex-plugin'
 import katex from 'katex'
 
 import { CustomForwardImageBlockComponent } from './utils'
@@ -34,8 +38,6 @@ const plugins = [katexPlugin]
 // we create and handle the draft-js editor
 //
 const BlogEditor = ({ blogItem }) => {
-  console.log(blogItem)
-
   // If we have been passed a blog item we are then editing a blog
   // convert raw into a ContentState and then set EditorState given ContentState
   const [editorState, setEditorState] = useState(
@@ -60,9 +62,7 @@ const BlogEditor = ({ blogItem }) => {
   // but our blog css styles only likes <p> so we force them to <p>
   const blockRenderMap = Immutable.Map({
     paragraph: { element: 'p' },
-    unstyled: {
-      element: 'div',
-    },
+    unstyled: { element: 'div', aliasedElements: ['p'] },
   })
 
   // We don't want to overwrite the whole draft-js render block map
@@ -81,11 +81,56 @@ const BlogEditor = ({ blogItem }) => {
           component: CustomForwardImageBlockComponent,
           editable: false,
           props: {
-            setEditorState,
+            setEditorState, // TODO: This probably needs to be changed to onChange
             editorState,
           },
         }
     }
+  }
+
+  const handleKeyCommand = command => {
+    let newState
+    if (CodeUtils.hasSelectionInBlock(editorState)) {
+      newState = CodeUtils.handleKeyCommand(editorState, command)
+    }
+
+    if (!newState) {
+      newState = RichUtils.handleKeyCommand(editorState, command)
+    }
+
+    if (newState) {
+      onChange(newState)
+      return 'handled'
+    }
+
+    return 'not-handled'
+  }
+
+  const keyBindingFn = e => {
+    if (!CodeUtils.hasSelectionInBlock(editorState)) {
+      return getDefaultKeyBinding(e)
+    }
+    const command = CodeUtils.getKeyBinding(e)
+    return command || getDefaultKeyBinding(e)
+  }
+
+  const handleReturn = e => {
+    e.preventDefault()
+    if (!CodeUtils.hasSelectionInBlock(editorState)) {
+      return 'not-handled'
+    }
+    onChange(CodeUtils.handleReturn(e, editorState))
+    return 'handled'
+  }
+
+  const handleTab = e => {
+    e.preventDefault()
+    console.log('tab called')
+    if (!CodeUtils.hasSelectionInBlock(editorState)) {
+      return 'not-handled'
+    }
+    onChange(CodeUtils.onTab(e, editorState))
+    return 'handled'
   }
 
   const onPublishClick = e => {
@@ -109,8 +154,43 @@ const BlogEditor = ({ blogItem }) => {
     },
   })(editorState.getCurrentContent())
 
-  console.log(convertToRaw(editorState.getCurrentContent()))
-  console.log('HTML', html)
+  const getBlockStyle = block => {
+    switch (block.getType()) {
+      case 'code-block':
+        return 'language-'
+      default:
+        return null
+    }
+  }
+
+  const onChange = newState => {
+    const decorator = new PrismDecorator({
+      prism: Prism,
+      defaultSyntax: 'javascript',
+    })
+    setEditorState(EditorState.set(newState, { decorator }))
+  }
+
+  const onInlineStyleToggle = inlineStyle => {
+    onChange(RichUtils.toggleInlineStyle(editorState, inlineStyle))
+  }
+
+  const onBlockStyleToggle = blockType => {
+    if (
+      blockType === 'code-block' &&
+      CodeUtils.hasSelectionInBlock(editorState)
+    ) {
+      const content = editorState.getCurrentContent()
+      const selection = editorState.getSelection()
+      const split = Modifier.splitBlock(content, selection)
+      onChange(EditorState.push(editorState, split, 'split-block'), blockType)
+    } else {
+      onChange(RichUtils.toggleBlockType(editorState, blockType))
+    }
+  }
+
+  // console.log(convertToRaw(editorState.getCurrentContent()))
+  // console.log('HTML', html)
 
   return (
     <div className="create-blog-wrapper">
@@ -122,7 +202,9 @@ const BlogEditor = ({ blogItem }) => {
       <div className="content">
         <Toolbar
           editorState={editorState}
-          setEditorState={setEditorState}
+          updateEditorState={onChange}
+          onInlineStyleToggle={onInlineStyleToggle}
+          onBlockStyleToggle={onBlockStyleToggle}
           LatexInsertButton={InsertButton}
         />
         <div className="draft-wrapper">
@@ -133,13 +215,25 @@ const BlogEditor = ({ blogItem }) => {
               editorState={editorState}
               // The function to executed by the editor when edits and selection
               // changes occur
-              onChange={setEditorState}
+              onChange={onChange}
               // Map of block rendering configurations. Each block type maps to an element
               // tag and an optional element wrapper.
               blockRenderMap={extendedBlockRenderMap}
               // Function to define custom block rendering. This allows for higher-level
               // components to define custom React rendering for ContetnBlock objects
               blockRendererFn={customBlockRendererFn}
+              // Function that allows to define class names to apply to the given
+              // block when it is rendered.
+              blockStyleFn={getBlockStyle}
+              // Allow for custom key binding logic, used to handle the custom
+              // key binding for the Prism code editor
+              keyBindingFn={keyBindingFn}
+              // Custom return function to stop Draft creating a split block when
+              // editing code, instead add a new line to the code block
+              handleReturn={handleReturn}
+              // Custom tab function to allow for indenting of code when editing
+              onTab={handleTab}
+              handleKeyCommand={handleKeyCommand}
               placeholder="Tell a new story..."
               // Whether spellcheck is turned on. Note for OSX Safari this also enables
               // autocorrect
