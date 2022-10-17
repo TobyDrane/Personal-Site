@@ -8,6 +8,7 @@ import {
   Modifier,
   getDefaultKeyBinding,
 } from 'draft-js'
+import { navigate } from 'gatsby'
 import Editor from '@draft-js-plugins/editor'
 import createKatexPlugin from 'draft-js-katex-plugin'
 import CodeUtils from 'draft-js-code'
@@ -16,6 +17,7 @@ import Prism from 'prismjs'
 import { convertToHTML } from 'draft-convert'
 import Immutable from 'immutable'
 import katex from 'katex'
+import { Button } from '@mantine/core'
 
 import { CustomForwardImageBlockComponent } from './utils'
 import Toolbar from './Toolbar'
@@ -195,9 +197,19 @@ const BlogEditor = ({ blogItem }) => {
   return (
     <div className="create-blog-wrapper">
       <div className="menu">
-        <button className="ui-button-dark" onClick={onPublishClick}>
+        <Button
+          color="dark"
+          size="xs"
+          variant="outline"
+          onClick={() => {
+            navigate('/create-blog')
+          }}
+        >
+          Home
+        </Button>
+        <Button color="dark" size="xs" onClick={onPublishClick}>
           Publish
-        </button>
+        </Button>
       </div>
       <div className="content">
         <Toolbar
