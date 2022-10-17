@@ -1,36 +1,35 @@
 import React, { useState, useEffect } from 'react'
-import { navigate } from 'gatsby'
+import { navigate, Link } from 'gatsby'
 import firebase from 'gatsby-plugin-firebase'
 import * as queryString from 'query-string'
+import { Button, Anchor, Badge } from '@mantine/core'
+
 import BlogEditor from './editor/BlogEditor'
 import { firebaseFetchBlogs } from '../../utils'
 
 // Used to display a single item within the blog list setting
 // Function fires back the item upon an certain action happening (edit & delete)
-const BlogListItem = ({ item, onEditClick, onDeleteClick }) => {
+const BlogListItem = ({ item, pathname, onDeleteClick }) => {
+  console.log(item)
+  const badgeText = item.private ? 'Draft' : 'Published'
+  const badgeColor = item.private ? 'red' : 'dark'
   return (
-    <div className="item" key={item.id}>
-      <div className="item-content">
-        <p>{item.title}</p>
-        <p
-          className={
-            item.private ? 'blog-status-draft' : 'blog-status-published'
-          }
+    <div className='item' key={item.id}>
+      <div className=''>
+        <Anchor
+          component={Link}
+          to={`${pathname}?edit=True&id=${item.id}`}
+          size='xl'
+          variant='link'
+          underline style={{ fontWeight: 'bold'}}
         >
-          {item.private ? 'Draft' : 'Published'}
-        </p>
+          {item.title}
+        </Anchor>
+        <p>{item.description}</p>
+        <Badge color={badgeColor} variant='light' size='sm'>{badgeText}</Badge> 
       </div>
-      <div className="item-actions">
-        <button
-          className="ui-button-light"
-          style={{ marginRight: '10px' }}
-          onClick={() => onEditClick(item)}
-        >
-          Edit
-        </button>
-        <button className="ui-button-light" onClick={() => onDeleteClick(item)}>
-          Delete
-        </button>
+      <div style={{ paddingRight: '20px', margin: 'auto 0px' }}>
+        <Button color='red' size='xs' variant='outline' onClick={() => onDeleteClick(item)}>Delete</Button>
       </div>
     </div>
   )
@@ -73,12 +72,6 @@ const CreateBlog = ({ location }) => {
     const logOut = await firebase.auth().signOut()
   }
 
-  const onEditBlog = item => {
-    const { id } = item
-    const path = `${pathname}?edit=True&id=${id}`
-    navigate(path)
-  }
-
   const onDeleteBlog = async item => {
     const storage = firebase.storage()
     const path = item.reference.location.path_
@@ -117,21 +110,17 @@ const CreateBlog = ({ location }) => {
 
         <div className="content">
           <div className="action-bar">
-            <button className="ui-button-dark" onClick={createNewBlog}>
-              Create Blog
-            </button>
-            <button className="ui-button-dark" onClick={logout}>
-              Logout
-            </button>
+            <Button onClick={createNewBlog} size="sm" color="dark">Create Blog</Button>
+            <Button onClick={logout} size="sm" color="dark" variant='outline'>Logout</Button>
           </div>
 
           <div className="blog-list">
             {blogItems.map(item => (
               <BlogListItem
                 key={item.id}
+                pathname={pathname}
                 item={item}
                 onDeleteClick={onDeleteBlog}
-                onEditClick={onEditBlog}
               />
             ))}
           </div>
