@@ -6,12 +6,19 @@ const firebaseFetchBlogs = async (firebase, publicOnly) => {
   // Array of download urls
   const { urls, references } = await getBlogsDownloadURLS(firebase)
   const data = await downloadFiles(urls)
-  const newData = data.map((item, index) => {
-    if (publicOnly && item.private) return []
+  let newData = data.map((item, index) => {
+    if (publicOnly && item.private) return {}
     return { ...item, reference: references[index] }
   })
 
-  return newData
+  // Remove empty objects
+  newData = newData.filter(n => Object.keys(n).length)
+  // Finally sort by date
+  const newDataSorted = newData.sort(
+    (a, b) => Number(new Date(b.date)) - Number(new Date(a.date))
+  )
+
+  return newDataSorted
 }
 
 // Async function to read all blogs within firebase

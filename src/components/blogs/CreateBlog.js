@@ -14,22 +14,32 @@ const BlogListItem = ({ item, pathname, onDeleteClick }) => {
   const badgeText = item.private ? 'Draft' : 'Published'
   const badgeColor = item.private ? 'red' : 'dark'
   return (
-    <div className='item' key={item.id}>
-      <div className=''>
+    <div className="item" key={item.id}>
+      <div className="">
         <Anchor
           component={Link}
           to={`${pathname}?edit=True&id=${item.id}`}
-          size='xl'
-          variant='link'
-          underline style={{ fontWeight: 'bold'}}
+          size="xl"
+          variant="link"
+          underline
+          style={{ fontWeight: 'bold' }}
         >
           {item.title}
         </Anchor>
         <p>{item.description}</p>
-        <Badge color={badgeColor} variant='light' size='sm'>{badgeText}</Badge> 
+        <Badge color={badgeColor} variant="light" size="sm">
+          {badgeText}
+        </Badge>
       </div>
       <div style={{ paddingRight: '20px', margin: 'auto 0px' }}>
-        <Button color='red' size='xs' variant='outline' onClick={() => onDeleteClick(item)}>Delete</Button>
+        <Button
+          color="red"
+          size="xs"
+          variant="outline"
+          onClick={() => onDeleteClick(item)}
+        >
+          Delete
+        </Button>
       </div>
     </div>
   )
@@ -103,15 +113,19 @@ const CreateBlog = ({ location }) => {
 
   return (
     <div className="master-container">
-      <div className="create-blog-wrapper" style={{ width: '100%' }}>
+      <div className="blog-wrapper" style={{ width: '100%' }}>
         {firebaseErrorMessage ? (
           <p className="error-text">{firebaseErrorMessage}</p>
         ) : null}
 
         <div className="content">
           <div className="action-bar">
-            <Button onClick={createNewBlog} size="sm" color="dark">Create Blog</Button>
-            <Button onClick={logout} size="sm" color="dark" variant='outline'>Logout</Button>
+            <Button onClick={createNewBlog} size="sm" color="dark">
+              Create Blog
+            </Button>
+            <Button onClick={logout} size="sm" color="dark" variant="outline">
+              Logout
+            </Button>
           </div>
 
           <div className="blog-list">

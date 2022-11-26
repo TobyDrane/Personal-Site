@@ -24,6 +24,7 @@ import Toolbar from './Toolbar'
 import PublishModal from '../PublishModal'
 
 import 'draft-js/dist/Draft.css'
+import BlogRenderer from '../BlogRenderer'
 
 // Create the setup to allow for latex level math
 const katexPlugin = createKatexPlugin({
@@ -54,11 +55,6 @@ const BlogEditor = ({ blogItem }) => {
     publishModalShown: false,
   })
 
-  const editorRef = React.useRef(null)
-  useEffect(() => {
-    editorRef.current.focus()
-  }, [])
-
   // We handle how we render the blocks, i.e. we can make H6 use a <h2> tag
   // draft-js default's paragraphs and anything else to a div
   // but our blog css styles only likes <p> so we force them to <p>
@@ -83,7 +79,6 @@ const BlogEditor = ({ blogItem }) => {
           component: CustomForwardImageBlockComponent,
           editable: false,
           props: {
-            setEditorState, // TODO: This probably needs to be changed to onChange
             editorState,
           },
         }
@@ -145,8 +140,6 @@ const BlogEditor = ({ blogItem }) => {
     setComponentState({ ...componentState, publishModalShown: true })
   }
 
-  const focusEditor = () => editorRef.current.focus()
-
   const html = convertToHTML({
     blockToHTML: block => {
       // console.log(block)
@@ -195,7 +188,7 @@ const BlogEditor = ({ blogItem }) => {
   // console.log('HTML', html)
 
   return (
-    <div className="create-blog-wrapper">
+    <div className="blog-wrapper">
       <div className="menu">
         <Button
           color="dark"
@@ -220,41 +213,17 @@ const BlogEditor = ({ blogItem }) => {
           LatexInsertButton={InsertButton}
         />
         <div className="draft-wrapper">
-          <div className="blog-content" onClick={() => focusEditor()}>
-            <Editor
-              // EditorState is the top-level state object for the editor, it is an
-              // immutable record that represents the entire state of a Draft editor
-              editorState={editorState}
-              // The function to executed by the editor when edits and selection
-              // changes occur
-              onChange={onChange}
-              // Map of block rendering configurations. Each block type maps to an element
-              // tag and an optional element wrapper.
-              blockRenderMap={extendedBlockRenderMap}
-              // Function to define custom block rendering. This allows for higher-level
-              // components to define custom React rendering for ContetnBlock objects
-              blockRendererFn={customBlockRendererFn}
-              // Function that allows to define class names to apply to the given
-              // block when it is rendered.
-              blockStyleFn={getBlockStyle}
-              // Allow for custom key binding logic, used to handle the custom
-              // key binding for the Prism code editor
-              keyBindingFn={keyBindingFn}
-              // Custom return function to stop Draft creating a split block when
-              // editing code, instead add a new line to the code block
-              handleReturn={handleReturn}
-              // Custom tab function to allow for indenting of code when editing
-              onTab={handleTab}
-              handleKeyCommand={handleKeyCommand}
-              placeholder="Tell a new story..."
-              // Whether spellcheck is turned on. Note for OSX Safari this also enables
-              // autocorrect
-              spellCheck={true}
-              ref={editorRef}
-              plugins={plugins}
-              readOnly={false}
-            />
-          </div>
+          <BlogRenderer
+            editorState={editorState}
+            readOnly={false}
+            plugins={plugins}
+            onChange={onChange}
+            blockRenderMap={blockRenderMap}
+            keyBindingFn={keyBindingFn}
+            handleReturn={handleReturn}
+            onTab={handleTab}
+            handleKeyCommand={handleKeyCommand}
+          />
         </div>
 
         {componentState.publishModalShown ? (
@@ -273,3 +242,39 @@ const BlogEditor = ({ blogItem }) => {
 }
 
 export default BlogEditor
+
+// <div className="blog-content" onClick={() => focusEditor()}>
+//   <Editor
+//     // EditorState is the top-level state object for the editor, it is an
+//     // immutable record that represents the entire state of a Draft editor
+//     editorState={editorState}
+//     // The function to executed by the editor when edits and selection
+//     // changes occur
+//     onChange={onChange}
+//     // Map of block rendering configurations. Each block type maps to an element
+//     // tag and an optional element wrapper.
+//     blockRenderMap={extendedBlockRenderMap}
+//     // Function to define custom block rendering. This allows for higher-level
+//     // components to define custom React rendering for ContetnBlock objects
+//     blockRendererFn={customBlockRendererFn}
+//     // Function that allows to define class names to apply to the given
+//     // block when it is rendered.
+//     blockStyleFn={getBlockStyle}
+//     // Allow for custom key binding logic, used to handle the custom
+//     // key binding for the Prism code editor
+//     keyBindingFn={keyBindingFn}
+//     // Custom return function to stop Draft creating a split block when
+//     // editing code, instead add a new line to the code block
+//     handleReturn={handleReturn}
+//     // Custom tab function to allow for indenting of code when editing
+//     onTab={handleTab}
+//     handleKeyCommand={handleKeyCommand}
+//     placeholder="Tell a new story..."
+//     // Whether spellcheck is turned on. Note for OSX Safari this also enables
+//     // autocorrect
+//     spellCheck={true}
+//     ref={editorRef}
+//     plugins={plugins}
+//     readOnly={false}
+//   />
+// </div>
