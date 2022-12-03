@@ -1,29 +1,30 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import {
   EditorState,
   RichUtils,
   convertFromRaw,
   convertToRaw,
-  DefaultDraftBlockRenderMap,
   Modifier,
   getDefaultKeyBinding,
 } from 'draft-js'
 import { navigate } from 'gatsby'
-import Editor from '@draft-js-plugins/editor'
 import createKatexPlugin from 'draft-js-katex-plugin'
 import CodeUtils from 'draft-js-code'
 import PrismDecorator from 'draft-js-prism'
 import Prism from 'prismjs'
 import { convertToHTML } from 'draft-convert'
-import Immutable from 'immutable'
 import katex from 'katex'
 import { Button } from '@mantine/core'
 
-import { CustomForwardImageBlockComponent } from './utils'
 import Toolbar from './Toolbar'
 import PublishModal from '../PublishModal'
 
 import 'draft-js/dist/Draft.css'
+import 'prismjs/components/prism-python'
+import 'prismjs/components/prism-clike'
+import 'prismjs/components/prism-c'
+import 'prismjs/components/prism-cpp'
+
 import BlogRenderer from '../BlogRenderer'
 
 // Create the setup to allow for latex level math
@@ -54,36 +55,6 @@ const BlogEditor = ({ blogItem }) => {
   const [componentState, setComponentState] = useState({
     publishModalShown: false,
   })
-
-  // We handle how we render the blocks, i.e. we can make H6 use a <h2> tag
-  // draft-js default's paragraphs and anything else to a div
-  // but our blog css styles only likes <p> so we force them to <p>
-  const blockRenderMap = Immutable.Map({
-    paragraph: { element: 'p' },
-    unstyled: { element: 'div', aliasedElements: ['p'] },
-  })
-
-  // We don't want to overwrite the whole draft-js render block map
-  // but just to extend it to contain our new values
-  // See https://draftjs.org/docs/advanced-topics-custom-block-render-map/
-  const extendedBlockRenderMap = DefaultDraftBlockRenderMap.merge(
-    blockRenderMap
-  )
-
-  // Custom block renderer function, used for our internal special blocks
-  const customBlockRendererFn = contentBlock => {
-    const type = contentBlock.getType()
-    switch (type) {
-      case 'atomic:image':
-        return {
-          component: CustomForwardImageBlockComponent,
-          editable: false,
-          props: {
-            editorState,
-          },
-        }
-    }
-  }
 
   const handleKeyCommand = command => {
     let newState
@@ -149,15 +120,6 @@ const BlogEditor = ({ blogItem }) => {
     },
   })(editorState.getCurrentContent())
 
-  const getBlockStyle = block => {
-    switch (block.getType()) {
-      case 'code-block':
-        return 'language-'
-      default:
-        return null
-    }
-  }
-
   const onChange = newState => {
     const decorator = new PrismDecorator({
       prism: Prism,
@@ -183,9 +145,6 @@ const BlogEditor = ({ blogItem }) => {
       onChange(RichUtils.toggleBlockType(editorState, blockType))
     }
   }
-
-  // console.log(convertToRaw(editorState.getCurrentContent()))
-  // console.log('HTML', html)
 
   return (
     <div className="blog-wrapper">
@@ -218,7 +177,6 @@ const BlogEditor = ({ blogItem }) => {
             readOnly={false}
             plugins={plugins}
             onChange={onChange}
-            blockRenderMap={blockRenderMap}
             keyBindingFn={keyBindingFn}
             handleReturn={handleReturn}
             onTab={handleTab}

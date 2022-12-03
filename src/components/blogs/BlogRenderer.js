@@ -20,7 +20,6 @@ const BlogRenderer = ({ editorState, readOnly, plugins, ...props }) => {
     },
     unstyled: {
       element: 'div',
-      aliasedElements: ['p'],
     },
   })
   // We don't want to overwrite the whole draft-js render block map
@@ -48,7 +47,11 @@ const BlogRenderer = ({ editorState, readOnly, plugins, ...props }) => {
   const getBlockStyle = block => {
     switch (block.getType()) {
       case 'code-block':
-        return 'language-'
+        const syntax = block.getData().get('syntax')
+        if (syntax) {
+          return `language-${syntax}`
+        }
+        return null
       default:
         return null
     }

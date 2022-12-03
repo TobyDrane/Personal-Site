@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import firebase from 'gatsby-plugin-firebase'
 import { navigate } from 'gatsby'
 import * as queryString from 'query-string'
-import Editor from '@draft-js-plugins/editor'
 import { convertFromRaw, EditorState } from 'draft-js'
 import createKatexPlugin from 'draft-js-katex-plugin'
 import katex from 'katex'
@@ -33,6 +32,7 @@ const BlogGridItem = ({ item, pathname }) => {
         <h1>{item.title}</h1>
         <p>{item.description}</p>
         <span>{`${month} ${day}`}</span>
+        <span>{` - ${item.wordCount} words`}</span>
       </div>
     </li>
   )

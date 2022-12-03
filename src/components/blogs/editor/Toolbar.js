@@ -1,7 +1,13 @@
 import React from 'react'
 import { EditorState, Modifier } from 'draft-js'
 import CodeUtils from 'draft-js-code'
-import { IconUnderline, IconItalic, IconBold, IconPhoto } from '@tabler/icons'
+import {
+  IconUnderline,
+  IconItalic,
+  IconBold,
+  IconPhoto,
+  IconCode,
+} from '@tabler/icons'
 import { Select, Button, FileButton } from '@mantine/core'
 import firebase from 'firebase'
 
@@ -26,9 +32,9 @@ const SyntaxBlock = props => {
   const currentBlock = contentState.getBlockForKey(startKey)
   const currentSyntax = getSyntax(currentBlock)
 
-  const onChange = e => {
+  const onChange = val => {
     const newContent = Modifier.mergeBlockData(contentState, selection, {
-      syntax: e.target.value,
+      syntax: val,
     })
 
     updateEditorState(
@@ -36,79 +42,15 @@ const SyntaxBlock = props => {
     )
   }
   if (!currentSyntax) {
-    onChange({ target: { value: 'javascript' } })
+    onChange('javascript')
   }
   return (
-    <select value={currentSyntax} onChange={onChange}>
-      <option value="css">CSS</option>
-      <option value="javascript">Javascript</option>
-      <option value="python">Python</option>
-    </select>
-  )
-}
-
-// Inline style controlling toolbar buttons
-// Renders the toolbar button to handle the styling
-// then on click changes the Draft-js inline styling to the relevant button
-const InlineStyleControls = ({ editorState, onToggle, updateEditorState }) => {
-  // Types set by the toolbar
-  const INLINE_TYPES = [
-    { style: 'BOLD', text: 'B' },
-    { style: 'ITALIC', text: 'I' },
-    { style: 'UNDERLINE', text: 'U' },
-  ]
-  const currentStyle = editorState.getCurrentInlineStyle()
-  return (
-    <>
-      {INLINE_TYPES.map(type => (
-        <span key={`${type.style.toLowerCase()}-btn`}>
-          <ToolbarButton
-            active={currentStyle.has(type.style)}
-            onMouseDown={e => {
-              e.preventDefault()
-              onToggle(type.style)
-            }}
-            text={type.text}
-            uniqueKey={`${type.style.toLowerCase()}-btn`}
-          />
-        </span>
-      ))}
-      <SyntaxBlock
-        editorState={editorState}
-        updateEditorState={updateEditorState}
-      />
-    </>
-  )
-}
-
-// Block style controlling toolbar button
-// Renders the toolbar button to handle new blocks
-const BlockStyleControls = ({ editorState, onToggle }) => {
-  // These correspond to the default Draft-js block render map
-  // https://draftjs.org/docs/advanced-topics-custom-block-render-map/
-  const BLOCK_TYPES = [
-    { style: 'header-one', text: 'H1' },
-    { style: 'header-two', text: 'H2' },
-    { style: 'header-three', text: 'H3' },
-    { style: 'blockquote', text: '" "' },
-    { style: 'code-block', text: '</>' },
-  ]
-  const blockType = getCurrentBlock(editorState)
-  return (
-    <>
-      {BLOCK_TYPES.map(type => (
-        <span key={`${type.style.toLowerCase()}-btn`}>
-          <ToolbarButton
-            active={type.style === blockType}
-            text={type.text}
-            onMouseDown={e => {
-              e.preventDefault()
-              onToggle(type.style)
-            }}
-          />
-        </span>
-      ))}
-    </>
+    <Select
+      data={['css', 'javascript', 'python', 'cpp']}
+      value={currentSyntax}
+      onChange={val => onChange(val)}
+      variant="unstyled"
+    />
   )
 }
 
@@ -250,9 +192,26 @@ const Toolbar = ({
               </Button>
             )}
           </FileButton>
+          <Button
+            variant="subtle"
+            size="xs"
+            color={getColor('code-block')}
+            onMouseDown={e => {
+              e.preventDefault()
+              return onBlockChange('code-block')
+            }}
+          >
+            <IconCode size={20} />
+          </Button>
         </Button.Group>
       </span>
       <span>{<LatexInsertButton />}</span>
+      <span>
+        <SyntaxBlock
+          editorState={editorState}
+          updateEditorState={updateEditorState}
+        />
+      </span>
     </div>
   )
 }

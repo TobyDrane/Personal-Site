@@ -11,6 +11,18 @@ const schemaConstants = {
   type: 'blog',
 }
 
+const countWordsFromRaw = raw => {
+  let wordCount = 0
+  if (raw && raw.blocks) {
+    const blocks = raw.blocks
+    blocks.forEach(block => {
+      const { text } = block
+      wordCount += text.trim().split(/\s+/).length
+    })
+  }
+  return wordCount
+}
+
 const PublishModal = ({ isShown, onRequestClose, JSONContent, blogItem }) => {
   // If we have a current blog item, this means we are editing a previously created blog
   // We need to set all the default values within the publish modal to these defaults
@@ -31,6 +43,7 @@ const PublishModal = ({ isShown, onRequestClose, JSONContent, blogItem }) => {
     ...schemaConstants,
     date,
     content: JSONContent,
+    wordCount: countWordsFromRaw(JSONContent),
     id,
   })
 
