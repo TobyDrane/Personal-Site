@@ -1,0 +1,82 @@
+{% extends 'lab/index.html.j2' %}
+
+{% block html_head %}
+
+{{ super() }}
+
+<style>
+html {
+	width: '100%';
+}
+
+:root {
+    --color-heading: #202020;
+    --color-text: #000000;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 500 !important;
+    color: var(--color-heading) !important;
+    padding: 0 !important;
+    margin: 12px 0px !important;
+}
+
+h1 {
+    font-size: 2rem !important;
+}
+
+h2 {
+    font-size: 1.5rem !important;
+}
+
+h3 {
+    font-size: 1.2rem !important;
+}
+
+h4 {
+    font-size: 1rem !important;
+}
+
+h5 {
+    font-size: 0.8rem !important;
+}
+
+h6 {
+    font-size: 0.7rem !important;
+}
+
+
+p {
+    font-weight: 300 !important;
+    color: var(--color-text) !important;
+    line-height: 1.2rem !important;
+    font-size: 0.9rem !important;
+    margin: 1.2rem 0 !important;
+}
+
+.jp-InputArea-prompt {
+	visibility: hidden !important;
+}
+
+.jp-CodeCell {
+	margin-left: 50px !important;
+	margin-right: 50px !important;
+}
+
+.jp-InputArea-editor {
+	padding: 10px !important;
+	background: none !important;
+	border-radius: 5px;
+}
+
+.highlight {
+	background: none !important;
+}
+
+</style>
+{% endblock html_head %}
