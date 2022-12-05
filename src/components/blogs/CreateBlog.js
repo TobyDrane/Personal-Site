@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { navigate } from 'gatsby'
 import firebase from 'gatsby-plugin-firebase'
 import * as queryString from 'query-string'
-import BlogEditor from './editor/BlogEditor'
 import { firebaseFetchBlogs } from '../../utils'
 
 // Used to display a single item within the blog list setting
@@ -66,7 +65,7 @@ const CreateBlog = ({ location }) => {
 
   const createNewBlog = () => {
     const path = `${pathname}?edit=True`
-    navigate(path)
+    // navigate(path)
   }
 
   const logout = async () => {
@@ -76,7 +75,7 @@ const CreateBlog = ({ location }) => {
   const onEditBlog = item => {
     const { id } = item
     const path = `${pathname}?edit=True&id=${id}`
-    navigate(path)
+    // navigate(path)
   }
 
   const onDeleteBlog = async item => {
@@ -101,12 +100,10 @@ const CreateBlog = ({ location }) => {
     if (isEditing.id) {
       // Fetch item with this id and pass to the editor
       const blogItem = blogItems.filter(value => value.id == isEditing.id)
-      return <BlogEditor blogItem={blogItem[0]} />
+      // return <BlogEditor blogItem={blogItem[0]} />
     }
-    return <BlogEditor />
+    // return <BlogEditor />
   }
-
-  console.log(blogItems)
 
   return (
     <div className="master-container">
