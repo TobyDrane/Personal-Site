@@ -31,3 +31,7 @@ build/site:
 build/blogs:
 	node ./scripts/convert-blogs.js
 	node ./scripts/upload-blogs.js
+
+build:
+	make build/blogs
+	make build/site
