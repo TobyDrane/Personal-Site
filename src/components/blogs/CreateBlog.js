@@ -101,7 +101,10 @@ const CreateBlog = ({ location }) => {
     console.log(currentBlog)
 
     return (
-      <div className="iframe-container">
+      <div
+        className="iframe-container"
+        style={{ marginTop: '20px', height: 'calc(100% - 65px)' }}
+      >
         <div className="iframe-container-header">
           <h1>{currentBlog[0].name}</h1>
           <p>{currentBlog[0].description}</p>

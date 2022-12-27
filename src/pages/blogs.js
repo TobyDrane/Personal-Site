@@ -40,7 +40,8 @@ const Blogs = ({ location }) => {
 
   useEffect(() => {
     const firebaseFetch = async () => {
-      const blogs = await firebaseFetchMetadataBlogs(firebase)
+      let blogs = await firebaseFetchMetadataBlogs(firebase)
+      blogs = blogs.filter(item => !item.published)
       setBlogs(blogs)
     }
 
@@ -66,9 +67,6 @@ const Blogs = ({ location }) => {
 
   if (isViewingBlog) {
     const currentBlog = blogs.filter(item => item.file === isViewingBlog)
-    console.log(currentBlog)
-    console.log(blogUrl)
-
     return (
       <Layout>
         <SEO />
@@ -82,6 +80,17 @@ const Blogs = ({ location }) => {
             </p>
           </div>
           <iframe src={blogUrl} />
+        </div>
+      </Layout>
+    )
+  }
+
+  if (!blogs.length) {
+    return (
+      <Layout>
+        <SEO />
+        <div className="master-container">
+          <p>Coming Soon...</p>
         </div>
       </Layout>
     )
