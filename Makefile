@@ -25,5 +25,9 @@ develop:
 clean:
 	npm run clean
 
-build:
+build/site:
 	npm run build
+
+build/blogs:
+	node ./scripts/convert-blogs.js
+	node ./scripts/upload-blogs.js
