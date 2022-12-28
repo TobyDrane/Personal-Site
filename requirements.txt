@@ -1,0 +1,4 @@
+nbconvert
+pandas
+numpy
+jupyter

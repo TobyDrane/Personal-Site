@@ -13,6 +13,28 @@ const firebaseFetchBlogs = async firebase => {
   return newData
 }
 
+// Async firebase function to fetch all the blogs metadata
+// and return the json array
+const firebaseFetchMetadataBlogs = async firebase => {
+  const objectRef = firebase.storage().ref('blogs-html/metadata.json')
+  const url = await objectRef.getDownloadURL()
+  const json = await (await fetch(url)).json()
+  return json
+}
+
+const firebaseFetchHTMLBlogUrl = async (firebase, filename) => {
+  const objectRef = firebase.storage().ref(`blogs-html/${filename}`)
+  const url = await objectRef.getDownloadURL()
+  return url
+}
+
+// Async firebase function to fetch all the html blogs
+const firebaseFetchHTMLBlogs = async firebase => {
+  // Array of download urls
+  const items = await getBlogsHTMLDownloadURLS(firebase)
+  return items
+}
+
 // Async function to read all blogs within firebase
 // and return an array of urls to download content from
 const getBlogsDownloadURLS = async firebase => {
@@ -37,6 +59,29 @@ const getBlogsDownloadURLS = async firebase => {
   return { urls, references }
 }
 
+// Async function to read all blogs within firebase
+// and return an array of urls to download content from
+const getBlogsHTMLDownloadURLS = async firebase => {
+  const storageRef = firebase.storage().ref('blogs-html/')
+  const blogs = await storageRef.listAll()
+  const { items } = blogs
+
+  // To return an array of objects, url and name
+  const _items = []
+  // Array of references -> Needed for delete functions
+  const references = []
+  if (items.length) {
+    await Promise.all(
+      items.map(async reference => {
+        const url = await reference.getDownloadURL()
+        _items.push({ url, name: reference.name })
+      })
+    )
+  }
+
+  return _items
+}
+
 // Given an array of urls to download files from
 // download file contents and return an array of objects
 const downloadFiles = async urls => {
@@ -48,4 +93,9 @@ const downloadFiles = async urls => {
   return data
 }
 
-export { firebaseFetchBlogs }
+export {
+  firebaseFetchBlogs,
+  firebaseFetchHTMLBlogs,
+  firebaseFetchMetadataBlogs,
+  firebaseFetchHTMLBlogUrl,
+}

@@ -63,28 +63,6 @@ export const query = graphql`
         }
       }
     }
-    allMdx(sort: { order: DESC, fields: [frontmatter___date] }) {
-      edges {
-        node {
-          fields {
-            slug
-          }
-          frontmatter {
-            title
-            description
-            private
-            heroImage {
-              childImageSharp {
-                fluid(maxWidth: 1000) {
-                  # Choose either the fragment including a small base64ed image, a traced placeholder SVG, or one without.
-                  ...GatsbyImageSharpFluid_noBase64
-                }
-              }
-            }
-          }
-        }
-      }
-    }
   }
 `
 

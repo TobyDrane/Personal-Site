@@ -69,3 +69,6 @@ yarn-error.log
 .yarn-integrity
 
 /notebooks/data
+/blogs-built/
+
+.venv
