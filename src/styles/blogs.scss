@@ -197,6 +197,12 @@
       color: #6a737d;
       font-size: 0.8rem;
     }
+
+    .badges {
+      margin-top: 10px;
+      display: flex;
+      gap: 5px;
+    }
   }
 
   iframe {
@@ -204,6 +210,12 @@
     width: 100%;
     border: none;
     border-left: 1px solid rgba(0, 0, 0, 0.2);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .iframe-container-header {
+    display: none !important;
   }
 }
 

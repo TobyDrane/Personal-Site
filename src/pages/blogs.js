@@ -6,13 +6,9 @@ import { Badge } from '@mantine/core'
 
 import Layout from '../components/Layout'
 import SEO from '../components/SEO'
-import {
-  firebaseFetchHTMLBlogs,
-  firebaseFetchHTMLBlogUrl,
-  firebaseFetchMetadataBlogs,
-} from '../utils'
+import { firebaseFetchHTMLBlogUrl, firebaseFetchMetadataBlogs } from '../utils'
 
-const BlogGridItem = ({ item, pathname }) => {
+const BlogGridItem = ({ item }) => {
   const date = new Date(item.date)
   const month = date.toLocaleDateString('default', { month: 'long' })
   const day = date.toLocaleDateString('default', { day: '2-digit' })
@@ -42,7 +38,6 @@ const BlogGridItem = ({ item, pathname }) => {
 }
 
 const Blogs = ({ location }) => {
-  const { pathname } = location
   const [blogs, setBlogs] = useState([])
   const [isViewingBlog, setIsViewingBlog] = useState(false)
   const [blogUrl, setBlogUrl] = useState()
@@ -95,6 +90,13 @@ const Blogs = ({ location }) => {
           <div className="iframe-container-header">
             <h1>{currentBlog[0].name}</h1>
             <p>{currentBlog[0].description}</p>
+            <span className="badges">
+              {currentBlog[0].tags.map(tag => (
+                <Badge size="xs" color="teal" variant="dot">
+                  {tag}
+                </Badge>
+              ))}
+            </span>
 
             <p className="text-muted">
               {new Date(currentBlog[0].date).toDateString()}
