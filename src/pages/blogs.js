@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { navigate } from 'gatsby'
 import firebase from 'gatsby-plugin-firebase'
 import * as queryString from 'query-string'
+import { Badge } from '@mantine/core'
 
 import Layout from '../components/Layout'
 import SEO from '../components/SEO'
@@ -24,9 +25,17 @@ const BlogGridItem = ({ item, pathname }) => {
     >
       <div>
         <h1>{item.name}</h1>
-        <p>{item.description}</p>
-        <span>{`${month} ${day}`}</span>
-        <span>{` - ${item.wordCount} words`}</span>
+        <h2>{item.description}</h2>
+        <p>
+          {`${month} ${day}`} - {`${item.wordCount} words`}
+        </p>
+        <span className="badges">
+          {item.tags.map(tag => (
+            <Badge size="xs" color="teal" variant="dot">
+              {tag}
+            </Badge>
+          ))}
+        </span>
       </div>
     </li>
   )
@@ -41,7 +50,7 @@ const Blogs = ({ location }) => {
   useEffect(() => {
     const firebaseFetch = async () => {
       let blogs = await firebaseFetchMetadataBlogs(firebase)
-      blogs = blogs.filter(item => !item.published)
+      blogs = blogs.filter(item => item.published)
       setBlogs(blogs)
     }
 
@@ -53,15 +62,27 @@ const Blogs = ({ location }) => {
 
     const firebaseFetch = async () => {
       const blogs = await firebaseFetchMetadataBlogs(firebase)
-      const url = await firebaseFetchHTMLBlogUrl(firebase, blog)
+      return blogs
+    }
 
-      setBlogs(blogs)
+    const filterBlogs = async blogs => {
+      const url = await firebaseFetchHTMLBlogUrl(firebase, blog)
+      setBlogs(await blogs)
       setBlogUrl(url)
       setIsViewingBlog(blog)
     }
 
+    const unfilterBlogs = async () => {
+      setBlogs(await blogs)
+      setBlogUrl()
+      setIsViewingBlog(false)
+    }
+
+    const blogs = firebaseFetch()
     if (blog) {
-      firebaseFetch()
+      filterBlogs(blogs)
+    } else {
+      unfilterBlogs(blogs)
     }
   }, [location.search])
 
