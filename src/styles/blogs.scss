@@ -18,17 +18,23 @@
         font-size: 2.4rem;
       }
 
-      p {
+      h2 {
         font-weight: 100;
         font-size: 1.2rem;
         margin-bottom: 15px;
       }
 
-      span {
+      p {
         font-weight: 100;
         font-size: 0.9rem;
         color: #757575;
         line-height: 20px;
+      }
+
+      .badges {
+        margin-top: 10px;
+        display: flex;
+        gap: 5px;
       }
     }
   }
@@ -191,6 +197,12 @@
       color: #6a737d;
       font-size: 0.8rem;
     }
+
+    .badges {
+      margin-top: 10px;
+      display: flex;
+      gap: 5px;
+    }
   }
 
   iframe {
@@ -198,6 +210,12 @@
     width: 100%;
     border: none;
     border-left: 1px solid rgba(0, 0, 0, 0.2);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .iframe-container-header {
+    display: none !important;
   }
 }
 

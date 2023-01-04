@@ -31,16 +31,15 @@ const Home = ({ data }) => {
           <div className="hello">Toby Drane</div>
           <div className="body">
             <p>
-              I work as a Data Scientist and Data Engineer in London, having
-              previously studied a MSc in Data Science & Machine Learning from
-              UCL.
+              I work as a Data Engineer in London, having previously studied a
+              MSc in Data Science & Machine Learning from UCL.
             </p>
             <br></br>
             <p>
-              I have interests around supervised and statistical based machine
-              learning systems and the theoretical mathematics that underpin AI.
-              Although my interests fall into many various realms outside AI
-              such as political theory, strategy and campaigns and finance.
+              I have interests around large scale data systems and
+              productionised machine learning and the mathematics underpinning
+              AI. Although my interests fall into many various realms such as CS
+              fundamentals, financial systems and strategy.
             </p>
             <br></br>
             <p>

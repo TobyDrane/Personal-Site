@@ -2,16 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { navigate } from 'gatsby'
 import firebase from 'gatsby-plugin-firebase'
 import * as queryString from 'query-string'
+import { Badge } from '@mantine/core'
 
 import Layout from '../components/Layout'
 import SEO from '../components/SEO'
-import {
-  firebaseFetchHTMLBlogs,
-  firebaseFetchHTMLBlogUrl,
-  firebaseFetchMetadataBlogs,
-} from '../utils'
+import { firebaseFetchHTMLBlogUrl, firebaseFetchMetadataBlogs } from '../utils'
 
-const BlogGridItem = ({ item, pathname }) => {
+const BlogGridItem = ({ item }) => {
   const date = new Date(item.date)
   const month = date.toLocaleDateString('default', { month: 'long' })
   const day = date.toLocaleDateString('default', { day: '2-digit' })
@@ -24,16 +21,23 @@ const BlogGridItem = ({ item, pathname }) => {
     >
       <div>
         <h1>{item.name}</h1>
-        <p>{item.description}</p>
-        <span>{`${month} ${day}`}</span>
-        <span>{` - ${item.wordCount} words`}</span>
+        <h2>{item.description}</h2>
+        <p>
+          {`${month} ${day}`} - {`${item.wordCount} words`}
+        </p>
+        <span className="badges">
+          {item.tags.map(tag => (
+            <Badge size="xs" color="teal" variant="dot">
+              {tag}
+            </Badge>
+          ))}
+        </span>
       </div>
     </li>
   )
 }
 
 const Blogs = ({ location }) => {
-  const { pathname } = location
   const [blogs, setBlogs] = useState([])
   const [isViewingBlog, setIsViewingBlog] = useState(false)
   const [blogUrl, setBlogUrl] = useState()
@@ -41,7 +45,7 @@ const Blogs = ({ location }) => {
   useEffect(() => {
     const firebaseFetch = async () => {
       let blogs = await firebaseFetchMetadataBlogs(firebase)
-      blogs = blogs.filter(item => !item.published)
+      blogs = blogs.filter(item => item.published)
       setBlogs(blogs)
     }
 
@@ -53,15 +57,27 @@ const Blogs = ({ location }) => {
 
     const firebaseFetch = async () => {
       const blogs = await firebaseFetchMetadataBlogs(firebase)
-      const url = await firebaseFetchHTMLBlogUrl(firebase, blog)
+      return blogs
+    }
 
-      setBlogs(blogs)
+    const filterBlogs = async blogs => {
+      const url = await firebaseFetchHTMLBlogUrl(firebase, blog)
+      setBlogs(await blogs)
       setBlogUrl(url)
       setIsViewingBlog(blog)
     }
 
+    const unfilterBlogs = async () => {
+      setBlogs(await blogs)
+      setBlogUrl()
+      setIsViewingBlog(false)
+    }
+
+    const blogs = firebaseFetch()
     if (blog) {
-      firebaseFetch()
+      filterBlogs(blogs)
+    } else {
+      unfilterBlogs(blogs)
     }
   }, [location.search])
 
@@ -74,6 +90,13 @@ const Blogs = ({ location }) => {
           <div className="iframe-container-header">
             <h1>{currentBlog[0].name}</h1>
             <p>{currentBlog[0].description}</p>
+            <span className="badges">
+              {currentBlog[0].tags.map(tag => (
+                <Badge size="xs" color="teal" variant="dot">
+                  {tag}
+                </Badge>
+              ))}
+            </span>
 
             <p className="text-muted">
               {new Date(currentBlog[0].date).toDateString()}
