@@ -45,7 +45,7 @@ const Blogs = ({ location }) => {
   useEffect(() => {
     const firebaseFetch = async () => {
       let blogs = await firebaseFetchMetadataBlogs(firebase)
-      blogs = blogs.filter(item => item.published)
+      blogs = blogs.filter(item => !item.published)
       setBlogs(blogs)
     }
 
