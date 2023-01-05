@@ -57,7 +57,7 @@ const Blogs = ({ location }) => {
 
     const firebaseFetch = async () => {
       const blogs = await firebaseFetchMetadataBlogs(firebase)
-      return blogs
+      return blogs.filter(item => !item.published)
     }
 
     const filterBlogs = async blogs => {
