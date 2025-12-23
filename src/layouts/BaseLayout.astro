@@ -1,11 +1,15 @@
 ---
+import '../styles/global.css';
+import GeometricBackground from '../components/GeometricBackground.astro';
+
 interface Props {
   title: string;
   description?: string;
   showHeader?: boolean;
+  showBackground?: boolean;
 }
 
-const { title, description = "Personal website", showHeader = false } = Astro.props;
+const { title, description = "Personal website", showHeader = false, showBackground = true } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -17,11 +21,14 @@ const { title, description = "Personal website", showHeader = false } = Astro.pr
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
   </head>
-  <body>
-    <div class="container">
+  <body class="font-sans text-gray-900 dark:text-gray-100 leading-relaxed min-h-screen bg-neutral-50 dark:bg-neutral-900">
+    {showBackground && <GeometricBackground />}
+    <div class="max-w-xl mx-auto px-6 py-16 md:py-20 relative">
       {showHeader && (
-        <header class="header">
-          <a href="/" class="header__name">Your Name</a>
+        <header class="mb-12">
+          <a href="/" class="text-base font-medium text-gray-900 dark:text-gray-100 hover:text-gray-500 dark:hover:text-gray-400 transition-colors">
+            Toby Drane
+          </a>
         </header>
       )}
 
@@ -29,9 +36,5 @@ const { title, description = "Personal website", showHeader = false } = Astro.pr
         <slot />
       </main>
     </div>
-
-    <style is:global>
-      @import '../styles/global.css';
-    </style>
   </body>
 </html>

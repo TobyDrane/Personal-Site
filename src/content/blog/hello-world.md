@@ -2,6 +2,7 @@
 title: "Hello World"
 description: "A first post to test the blog system."
 date: 2024-12-22
+draft: true
 ---
 
 This is a sample blog post to demonstrate the markdown rendering. You can write in **bold**, *italics*, or use `inline code`.

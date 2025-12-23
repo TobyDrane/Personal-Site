@@ -3,7 +3,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const isDev = import.meta.env.DEV;
+  const posts = await getCollection('blog', ({ data }) => {
+    return isDev || !data.draft;
+  });
   return posts.map((post) => ({
     params: { slug: post.slug },
     props: { post },
@@ -26,14 +29,18 @@ const formatDate = (date: Date) => {
 };
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description} showHeader={true}>
-  <article class="post">
-    <header class="post__header">
-      <h1 class="post__title">{post.data.title}</h1>
-      <p class="post__meta">{formatDate(post.data.date)}</p>
+<BaseLayout title={post.data.title} description={post.data.description} showHeader={true} showBackground={false}>
+  <article>
+    <header class="mb-10">
+      <h1 class="text-3xl font-semibold tracking-tight mb-2 text-gray-900 dark:text-gray-100">
+        {post.data.title}
+      </h1>
+      <p class="text-sm text-gray-500 dark:text-gray-500">
+        {formatDate(post.data.date)}
+      </p>
     </header>
 
-    <div class="post__content">
+    <div class="prose-custom">
       <Content />
     </div>
   </article>
