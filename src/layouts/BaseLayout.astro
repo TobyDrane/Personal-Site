@@ -1,0 +1,65 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  showHeader?: boolean;
+}
+
+const { title, description = "Personal website", showHeader = false } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+
+    <!-- Prevent flash of wrong theme -->
+    <script is:inline>
+      const theme = localStorage.getItem('theme') ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      {showHeader && (
+        <header class="header">
+          <a href="/" class="header__name">Your Name</a>
+        </header>
+      )}
+
+      <main>
+        <slot />
+      </main>
+    </div>
+
+    <script>
+      const toggle = document.getElementById('theme-toggle');
+
+      function updateToggle() {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (toggle) {
+          toggle.setAttribute('aria-checked', isDark ? 'true' : 'false');
+        }
+      }
+
+      updateToggle();
+
+      toggle?.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        updateToggle();
+      });
+    </script>
+
+    <style is:global>
+      @import '../styles/global.css';
+    </style>
+  </body>
+</html>

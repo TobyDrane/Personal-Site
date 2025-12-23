@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="Your Name">
+  <div class="page-header">
+    <h1 class="page-title">Your Name</h1>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" role="switch"></button>
+  </div>
+
+  <div class="bio">
+    <p>
+      Your Name is the founder of Example Company, a startup focused on
+      building tools that help people work more effectively.
+    </p>
+    <p>
+      Previously, they worked at Big Tech Company as a senior engineer,
+      where they led the development of several key products. They have
+      a background in computer science and a passion for clean design.
+    </p>
+    <p>
+      They earned their degree from University Name, and have been
+      writing about technology and design for over a decade.
+    </p>
+  </div>
+
+  {posts.length > 0 && (
+    <section class="section">
+      <h2 class="section__title">Writing</h2>
+      <ul class="post-list">
+        {posts.map((post) => (
+          <li>
+            <a href={`/blog/${post.slug}`}>{post.data.title}</a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</BaseLayout>
